@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@font-face {
+  font-family: Hind;
+  src: url(./assets/Hind/Hind-Regular.ttf);
+  weight: 400;
+}
+
+@font-face {
+  font-family: Iceland;
+  src: url(./assets/Iceland/Iceland-Regular.ttf);
+  weigh: 400;
+}
