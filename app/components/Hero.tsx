@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="hero-content text-center">
         <div className="max-w-md">
           <h1 className="text-6xl font-display font-bold">ZOTBotics</h1>
-          <p className="py-6 font-body">
+          <p className="py-6 text-xl font-body">
             The premier club network for all things robotics at the University
             of California, Irvine
           </p>

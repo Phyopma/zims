@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Navbar() {
   return (
-    <div className="navbar px-8 py-2 shadow-md bg-blue fixed top-0 z-50 bg-opacity-70">
+    <div className="navbar px-8 py-2 shadow-md bg-blue fixed top-0 z-50 bg-opacity-100">
       <div className="navbar-start">
         <p className="text-5xl align-bottom font-display">ZOTBotics</p>
       </div>
@@ -11,7 +11,7 @@ export default function Navbar() {
           <li>
             <details>
               <summary className="btn btn-ghost text-xl">About</summary>
-              <ul className="p-2 bg">
+              <ul className="p-2 ">
                 <li>
                   <a className="text-xl">Mission</a>
                 </li>
