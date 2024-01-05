@@ -1,10 +1,13 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
     <div className="navbar px-8 py-2 shadow-md bg-blue fixed top-0 z-50 bg-opacity-100">
       <div className="navbar-start">
-        <p className="text-5xl align-bottom font-display">ZOTBotics</p>
+        <a className="text-5xl align-bottom font-display" href="/">
+          ZOTBotics
+        </a>
       </div>
       <div className="flex flex-grow leading-none justify-around navbar-center">
         <ul className="menu menu-horizontal px-1">
@@ -13,7 +16,9 @@ export default function Navbar() {
               <summary className="btn btn-ghost text-xl">About</summary>
               <ul className="p-2 ">
                 <li>
-                  <a className="text-xl">Mission</a>
+                  <a className="text-xl" href="/mission">
+                    Mission
+                  </a>
                 </li>
                 <li>
                   <a className="text-xl">Officers</a>
