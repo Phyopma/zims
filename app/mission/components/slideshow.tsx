@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState, useRef } from "react";
+import Event from "./Event";
 
 const Slideshow: React.FC = ({}) => {
   const [curItem, setCurItem] = useState("item1");
@@ -10,7 +11,9 @@ const Slideshow: React.FC = ({}) => {
   const handleScrollX = () => {
     // Update the scrollX position whenever a scroll event occurs
     setScrollX(slideshowRef.current?.scrollLeft || 0);
-    if (scrollX >= (5 * window.innerWidth) / 2) {
+    if (scrollX >= (7 * window.innerWidth) / 2) {
+      setCurItem("item5");
+    } else if (scrollX >= (5 * window.innerWidth) / 2) {
       setCurItem("item4");
     } else if (scrollX >= (3 * window.innerWidth) / 2) {
       setCurItem("item3");
@@ -22,7 +25,7 @@ const Slideshow: React.FC = ({}) => {
   };
 
   return (
-    <div className="bg-neutral-900 w-full min-h-[80vh]">
+    <div className="bg-neutral-900 w-full min-h-[70vh]">
       <div className="flex justify-center w-full py-6 gap-16">
         <a
           href="#item1"
@@ -52,34 +55,49 @@ const Slideshow: React.FC = ({}) => {
             (curItem === "item4" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
+        <a
+          href="#item5"
+          className={
+            "rounded-full w-8 h-8" +
+            (curItem === "item5" ? " bg-yellow" : " bg-neutral-600")
+          }
+        ></a>
       </div>
       <div
         ref={slideshowRef}
         onScroll={handleScrollX}
-        className="carousel w-full bg-blue-dark"
+        className="carousel w-full h-[60vh]"
       >
         <div id="item1" className="carousel-item w-full">
-          <img
-            src="https://daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.jpg"
-            className="w-full"
+          <Event
+            headline="General Meetings"
+            body="ZIT, ACE, and UAVs all share 2 weekly general meetings presenting common topics on introductory robotics concepts like CAD, 3D printing, and basic electronics. Members will hear from veteran roboticists as they break down the best first steps into the hustle both on screen and on hand."
           />
         </div>
         <div id="item2" className="carousel-item w-full">
-          <img
-            src="https://daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.jpg"
-            className="w-full"
+          <Event
+            headline="Team Workshops"
+            body="Recruited project members selected to their respective team and team mentor will see to a weekly meeting at ZOTBotics’ Makerspace where they work exclusively with the vast array of tools and equipment at their disposal for their assigned build challenge. 
+            "
           />
         </div>
         <div id="item3" className="carousel-item w-full">
-          <img
-            src="https://daisyui.com/images/stock/photo-1414694762283-acccc27bca85.jpg"
-            className="w-full"
+          <Event
+            headline="UAV Flight Sesh"
+            body="Hosted on a biweekly basis at the green fields of the ARC, UAVs@UCI’s Flight Sesh welcomes hobbyists of the radio-controlled model aerial vehicles to take to the skies and enjoy with fellow pilots. Membership is not required, nor is possession or skill in an RC plane. All are welcome to sightsee or maybe try out one of our community planes or drones!
+"
           />
         </div>
         <div id="item4" className="carousel-item w-full">
-          <img
-            src="https://daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.jpg"
-            className="w-full"
+          <Event
+            headline="PEVuci’s Group Rides"
+            body="How about a shred down Irvine’s extravagant landscapes with several fellow PEV rides with PEVs@UCI’s biweekly group rides! Cruising speed and route rightly adaptable and flexible for all PEVs and all riders’ experience. Bring a friend, helmets on, and get ready to feel the wind in your face down the trails of beautiful Irvine!"
+          />
+        </div>
+        <div id="item5" className="carousel-item w-full">
+          <Event
+            headline="PEVuci’s “Intro2Speed” Track Sesh"
+            body="Who are we to stop at group rides around Irvine when we can settle with race track!? Hosted adjacently biweekly with PEVuci’s group rides, join us at our varying locations of parking garages and lots as we take on PEV-riding one corner at a time around our preset race track! Never ridden a PEV and want your first laps of practice? Got a need for speed to beat the best lap record? PEVuci’s Intro2Speed is your event to go to!"
           />
         </div>
       </div>
