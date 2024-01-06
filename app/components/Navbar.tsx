@@ -21,7 +21,9 @@ export default function Navbar() {
                   </a>
                 </li>
                 <li>
-                  <a className="text-xl">Officers</a>
+                  <a className="text-xl" href="/officers">
+                    Officers
+                  </a>
                 </li>
               </ul>
             </details>

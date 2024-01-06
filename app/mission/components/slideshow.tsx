@@ -66,7 +66,7 @@ const Slideshow: React.FC = ({}) => {
       <div
         ref={slideshowRef}
         onScroll={handleScrollX}
-        className="carousel w-full h-[60vh]"
+        className="carousel w-full min-h-[60vh]"
       >
         <div id="item1" className="carousel-item w-full">
           <Event

@@ -38,7 +38,7 @@ const OurMissionPage: React.FC = () => {
           />
           <Card
             heading="Community"
-            description="We’re 4 clubs conjoined under one roof for an accumulated member count of over 600- who’s there to not meet and connect with? As one big, supporting family, there is never a boring day’s worth of friends, classmates, or teammates to network with.  "
+            description="We’re 4 clubs conjoined under one roof for an accumulated member count of over 600- who’s there to not meet and connect with? As one big, supporting family, there is never a boring day’s worth of friends, classmates, or teammates to network with. "
             image={ACEImage}
           />
           <Card
