@@ -35,5 +35,5 @@ body {
 @font-face {
   font-family: Iceland;
   src: url(./assets/Iceland/Iceland-Regular.ttf);
-  weigh: 400;
+  weight: 400;
 }

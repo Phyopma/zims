@@ -46,7 +46,7 @@ export default function About() {
             </ul>
           </div>
           <div className="flex-1">
-            <div className="w-full h-full bg-yellow"></div>
+            <div className="mx-8 w-full rounded-lg h-full bg-yellow"></div>
           </div>
         </div>
       </div>
