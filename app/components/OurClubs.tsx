@@ -65,6 +65,7 @@ Logo as main visual, supporting photos of PEVs events
   ];
   // use next js <Image> for an image from app/Images/ZIT.png
   let [club, setClub] = useState("ZIT");
+  let clubDescription = eval(club.toLowerCase() + "ClubDescription");
   let zitClubBanner = (
     <Image
       key="zitBanner"
@@ -108,84 +109,31 @@ Logo as main visual, supporting photos of PEVs events
     />
   );
 
-  let zitClubDescriptionElement = (
+  let clubDescriptionElement = (
     <div
-      key="zitDesc"
-      className="flex flex-row items-center text-center justify-center text-xl font-body text-yellow py-2"
+      key={club + "Desc"}
+      className="flex flex-row items-center text-center justify-center text-xl font-body py-2"
     >
       <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-200 animate-duration-300 animate-ease-in">
-        {zitClubDescription[0]}
+        {clubDescription[0]}
       </div>
       <div className="divider divider-horizontal animate-fade"></div>
       <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        {zitClubDescription[1]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-500 animate-duration-300 animate-ease-in">
-        {zitClubDescription[2]}
-      </div>
-    </div>
-  );
-  let aceClubDescriptionElement = (
-    <div
-      key="aceDesc"
-      className="flex flex-row items-center text-center justify-center text-xl font-body text-red py-2"
-    >
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-200 animate-duration-300 animate-ease-in">
-        {aceClubDescription[0]}
+        {clubDescription[1]}
       </div>
       <div className="divider divider-horizontal animate-fade"></div>
       <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        {aceClubDescription[1]}
+        <button className="btn font-normal bg-yellow text-xl text-neutral-800 hover:bg-yellow hover:bg-opacity-60">
+          Learn More
+        </button>
       </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-500 animate-duration-300 animate-ease-in">
-        {aceClubDescription[2]}
-      </div>
-    </div>
-  );
-  let uavsClubDescriptionElement = (
-    <div
-      key="uavsDesc"
-      className="flex flex-row items-center text-center justify-center text-xl font-body text-green py-2"
-    >
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-200 animate-duration-300 animate-ease-in">
-        {uavsClubDescription[0]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        {uavsClubDescription[1]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-500 animate-duration-300 animate-ease-in">
-        {uavsClubDescription[2]}
-      </div>
-    </div>
-  );
-  let pevsClubDescriptionElement = (
-    <div
-      key="pevsDesc"
-      className="flex flex-row items-center text-center justify-center text-xl font-body text-orange py-2"
-    >
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-200 animate-duration-300 animate-ease-in">
-        {pevsClubDescription[0]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        {pevsClubDescription[1]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-500 animate-duration-300 animate-ease-in">
-        {pevsClubDescription[2]}
+      <div className=" absolute top-[82rem] left-[20rem] z-20 select-none rotate-12 w-full font-sans text-yellow animate-fade animate-once animate-delay-500 animate-duration-300 animate-ease-in pointer-events-none">
+        {clubDescription[2]}
       </div>
     </div>
   );
 
-  let clubDescription = eval(club.toLowerCase() + "ClubDescription");
   let clubBanner = eval(club.toLowerCase() + "ClubBanner");
-  let clubDescriptionElement = eval(
-    club.toLowerCase() + "ClubDescriptionElement"
-  );
 
   return (
     <div className="py-12 w-full bg-blue">
@@ -249,7 +197,7 @@ Logo as main visual, supporting photos of PEVs events
         </div>
       </div>
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-7xl pt-36 font-bold font-display"></h1>
+        <h1 className="text-7xl pt-48 font-bold font-display"></h1>
         {clubBanner}
         {clubDescriptionElement}
       </div>

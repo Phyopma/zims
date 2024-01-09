@@ -37,3 +37,9 @@ body {
   src: url(./assets/Iceland/Iceland-Regular.ttf);
   weight: 400;
 }
+
+@font-face {
+  font-family: Happy_Monkey;
+  src: url(./assets/Happy_Monkey/HappyMonkey-Regular.ttf);
+  weight: 400;
+}

@@ -30,6 +30,7 @@ const config: Config = {
     fontFamily: {
       display: ["Iceland"],
       body: ["Hind"],
+      sans: ["Happy_Monkey"],
     },
     extend: {
       backgroundImage: {
