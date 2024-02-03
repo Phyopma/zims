@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " overscroll-y-none"}>
         <Navbar />
         {/* <div className="min-h-[5rem]"></div> */}
         {children}

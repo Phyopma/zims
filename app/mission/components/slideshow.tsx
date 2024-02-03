@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState, useRef } from "react";
-import Event from "./Event";
+import Event from "../../components/UI/Event";
 
 const Slideshow: React.FC = ({}) => {
   const [curItem, setCurItem] = useState("item1");
@@ -25,40 +25,40 @@ const Slideshow: React.FC = ({}) => {
   };
 
   return (
-    <div className="bg-neutral-900 w-full min-h-[70vh]">
-      <div className="flex justify-center w-full py-6 gap-16">
+    <div className="min-h-[70vh] w-full bg-neutral-900">
+      <div className="flex w-full justify-center gap-12 py-6">
         <a
           href="#item1"
           className={
-            "rounded-full w-8 h-8" +
+            "h-5 w-5 rounded-full" +
             (curItem === "item1" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
         <a
           href="#item2"
           className={
-            "rounded-full w-8 h-8" +
+            "h-5 w-5 rounded-full" +
             (curItem === "item2" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
         <a
           href="#item3"
           className={
-            "rounded-full w-8 h-8" +
+            "h-5 w-5 rounded-full" +
             (curItem === "item3" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
         <a
           href="#item4"
           className={
-            "rounded-full w-8 h-8" +
+            "h-5 w-5 rounded-full" +
             (curItem === "item4" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
         <a
           href="#item5"
           className={
-            "rounded-full w-8 h-8" +
+            "h-5 w-5 rounded-full" +
             (curItem === "item5" ? " bg-yellow" : " bg-neutral-600")
           }
         ></a>
@@ -66,7 +66,7 @@ const Slideshow: React.FC = ({}) => {
       <div
         ref={slideshowRef}
         onScroll={handleScrollX}
-        className="carousel w-full min-h-[60vh]"
+        className="carousel min-h-[60vh] w-full"
       >
         <div id="item1" className="carousel-item w-full">
           <Event

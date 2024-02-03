@@ -69,7 +69,7 @@ Logo as main visual, supporting photos of PEVs events
   let zitClubBanner = (
     <Image
       key="zitBanner"
-      className="absolute animate-fade-left animate-once animate-delay-150 animate-duration-300 animate-ease-in"
+      className="z-0 animate-fade-left animate-delay-150 animate-duration-300 animate-once animate-ease-in"
       draggable="false"
       src={ZITsrc}
       alt="ZIT"
@@ -81,7 +81,7 @@ Logo as main visual, supporting photos of PEVs events
     <Image
       key="aceBanner"
       src={ACEsrc}
-      className="invert absolute animate-fade-left animate-once animate-delay-150 animate-duration-300 animate-ease-in"
+      className="z-0 animate-fade-left invert animate-delay-150 animate-duration-300 animate-once animate-ease-in"
       draggable="false"
       alt="ACE"
       width={500}
@@ -93,7 +93,7 @@ Logo as main visual, supporting photos of PEVs events
       key="uavsBanner"
       src={ZITsrc}
       alt="UAVs"
-      className="absolute animate-fade-left animate-once animate-delay-150 animate-duration-300 animate-ease-in"
+      className="z-0 animate-fade-left animate-delay-150 animate-duration-300 animate-once animate-ease-in"
       width={500}
       height={500}
     />
@@ -103,50 +103,57 @@ Logo as main visual, supporting photos of PEVs events
       key="pevsBanner"
       src={ZITsrc}
       alt="PEVs"
-      className="absolute animate-fade-left animate-once animate-delay-150 animate-duration-300 animate-ease-in"
+      className="z-0 animate-fade-left animate-delay-150 animate-duration-300 animate-once animate-ease-in"
       width={500}
       height={500}
     />
   );
 
   let clubDescriptionElement = (
-    <div
-      key={club + "Desc"}
-      className="flex flex-row items-center text-center justify-center text-xl font-body py-2"
-    >
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-200 animate-duration-300 animate-ease-in">
-        {clubDescription[0]}
+    <>
+      <div
+        key={club + "Desc"}
+        className="flex flex-row items-center justify-center py-2 text-center font-body text-xl"
+      >
+        <div className="card grid h-20 w-1/4 animate-fade-left place-items-center rounded-box animate-delay-200 animate-duration-300 animate-once animate-ease-out">
+          {clubDescription[0]}
+        </div>
+        <div className="divider divider-horizontal animate-fade"></div>
+        <div className="card grid h-20 w-1/4 animate-fade-left place-items-center rounded-box animate-delay-300 animate-duration-300 animate-once animate-ease-out">
+          {clubDescription[1]}
+        </div>
+        <div className="divider divider-horizontal animate-fade"></div>
+        <div className="card grid h-20 w-1/4 animate-fade-left place-items-center rounded-box animate-delay-300 animate-duration-300 animate-once animate-ease-out">
+          <button className="btn bg-yellow pt-1 text-xl text-neutral-800 hover:bg-yellow hover:bg-opacity-60">
+            Learn More
+          </button>
+        </div>
       </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        {clubDescription[1]}
-      </div>
-      <div className="divider divider-horizontal animate-fade"></div>
-      <div className="grid h-20 w-1/5 card rounded-box place-items-center animate-fade-left animate-once animate-delay-300 animate-duration-300 animate-ease-in">
-        <button className="btn font-normal bg-yellow text-xl text-neutral-800 hover:bg-yellow hover:bg-opacity-60">
-          Learn More
-        </button>
-      </div>
-      <div className=" absolute top-[82rem] left-[20rem] z-20 select-none rotate-12 w-full font-sans text-yellow animate-fade animate-once animate-delay-500 animate-duration-300 animate-ease-in pointer-events-none">
+      <div className="w-30 pointer-events-none z-30 ml-[54%] mt-[-26%] rotate-12 animate-fade select-none text-center font-sans text-yellow animate-delay-500 animate-duration-300 animate-once animate-ease-in">
         {clubDescription[2]}
       </div>
+    </>
+  );
+
+  let clubBanner = (
+    <div className="mt-[-5rem] flex min-h-[30rem] w-full select-none flex-col items-center justify-center">
+      {eval(club.toLowerCase() + "ClubBanner")}
     </div>
   );
 
-  let clubBanner = eval(club.toLowerCase() + "ClubBanner");
-
   return (
-    <div className="py-12 w-full bg-blue">
-      <div className="flex flex-col items-center justify-center ">
-        <h1 className="text-5xl font-display font-bold">
+    // <div className="py-12 w-full bg-gradient-to-b to-blue from-[#838383]">
+    <div className="min-h-[40rem] w-screen bg-blue py-12">
+      <div className="relative z-10 flex flex-col items-center justify-center ">
+        <h1 className="font-display text-5xl font-bold">
           Pick a club, any club
         </h1>
-        <div className="join py-8 z-10">
+        <div className="join z-0 py-8">
           <button
             className={
-              "btn btn-glass py-4 px-8 join-item rounded-lg shadow-lg" +
+              "btn-glass btn join-item rounded-lg px-8 py-4 shadow-lg" +
               (club == "ZIT"
-                ? " bg-yellow-construction hover:bg-yellow-construction hover:opacity-75 text-neutral-100"
+                ? " bg-yellow-construction text-neutral-100 hover:bg-yellow-construction hover:opacity-75"
                 : "")
             }
             onClick={() => {
@@ -157,9 +164,9 @@ Logo as main visual, supporting photos of PEVs events
           </button>
           <button
             className={
-              "btn btn-glass py-4 px-8 join-item rounded-lg shadow-lg" + //make the hover have reduced opacity
+              "btn-glass btn join-item rounded-lg px-8 py-4 shadow-lg" + //make the hover have reduced opacity
               (club == "ACE"
-                ? " bg-red hover:bg-red hover:opacity-75 text-neutral-100"
+                ? " bg-red text-neutral-100 hover:bg-red hover:opacity-75"
                 : "")
             }
             onClick={() => {
@@ -170,9 +177,9 @@ Logo as main visual, supporting photos of PEVs events
           </button>
           <button
             className={
-              "btn btn-glass py-4 px-8 join-item rounded-lg shadow-lg" +
+              "btn-glass btn join-item rounded-lg px-8 py-4 shadow-lg" +
               (club == "UAVs"
-                ? " bg-green hover:bg-green hover:opacity-75 text-neutral-100"
+                ? " bg-green text-neutral-100 hover:bg-green hover:opacity-75"
                 : "")
             }
             onClick={() => {
@@ -183,9 +190,9 @@ Logo as main visual, supporting photos of PEVs events
           </button>
           <button
             className={
-              "btn btn-glass py-4 px-8 join-item rounded-lg shadow-lg" +
+              "btn-glass btn join-item rounded-lg px-8 py-4 shadow-lg" +
               (club == "PEVs"
-                ? " bg-orange hover:bg-orange hover:opacity-75 text-neutral-100"
+                ? " bg-orange text-neutral-100 hover:bg-orange hover:opacity-75"
                 : "")
             }
             onClick={() => {
@@ -196,11 +203,8 @@ Logo as main visual, supporting photos of PEVs events
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="text-7xl pt-48 font-bold font-display"></h1>
-        {clubBanner}
-        {clubDescriptionElement}
-      </div>
+      {clubBanner}
+      <div className="z-10 mt-[-7rem]">{clubDescriptionElement}</div>
     </div>
   );
 }

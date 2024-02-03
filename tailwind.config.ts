@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      primary: {
+        DEFAULT: "#FFD30A",
+      },
+      secondary: {
+        DEFAULT: "#1B3D6D",
+      },
       yellow: {
         DEFAULT: "#FFD30A",
         construction: "#FEC917",
