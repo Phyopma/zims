@@ -129,7 +129,10 @@ Logo as main visual, supporting photos of PEVs events
           </button>
         </div>
       </div>
-      <div className="w-30 pointer-events-none z-30 ml-[54%] mt-[-26%] rotate-12 animate-fade select-none text-center font-sans text-yellow animate-delay-500 animate-duration-300 animate-once animate-ease-in">
+      <div
+        key={clubDescription[0]}
+        className="w-30 pointer-events-none z-30 ml-[54%] mt-[-26%] rotate-12 animate-fade select-none text-center font-sans text-yellow animate-delay-500 animate-duration-300 animate-once animate-ease-in"
+      >
         {clubDescription[2]}
       </div>
     </>
