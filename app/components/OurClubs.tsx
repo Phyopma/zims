@@ -129,17 +129,11 @@ Logo as main visual, supporting photos of PEVs events
           </button>
         </div>
       </div>
-      <div
-        key={clubDescription[0]}
-        className="w-30 pointer-events-none z-30 ml-[54%] mt-[-26%] rotate-12 animate-fade select-none text-center font-sans text-yellow animate-delay-500 animate-duration-300 animate-once animate-ease-in"
-      >
-        {clubDescription[2]}
-      </div>
     </>
   );
 
   let clubBanner = (
-    <div className="mt-[-5rem] flex min-h-[30rem] w-full select-none flex-col items-center justify-center">
+    <div className="absolute mt-[-5rem] flex min-h-[30rem] w-full select-none flex-col items-center justify-center">
       {eval(club.toLowerCase() + "ClubBanner")}
     </div>
   );
@@ -206,8 +200,17 @@ Logo as main visual, supporting photos of PEVs events
           </button>
         </div>
       </div>
-      {clubBanner}
-      <div className="z-10 mt-[-7rem]">{clubDescriptionElement}</div>
+
+      <div className="relative">
+        {clubBanner}
+        <div
+          key={clubDescription[0]}
+          className="w-30 pointer-events-none absolute z-10 ml-[54%] mt-4 rotate-12 animate-fade select-none text-center font-sans text-yellow animate-delay-500 animate-duration-300 animate-once animate-ease-in"
+        >
+          {clubDescription[2]}
+        </div>
+      </div>
+      <div className="z-10 mt-[16rem]">{clubDescriptionElement}</div>
     </div>
   );
 }
