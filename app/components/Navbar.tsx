@@ -44,7 +44,9 @@ export default function Navbar() {
         <a className="btn btn-ghost text-xl">ACE</a>
         <a className="btn btn-ghost text-xl">UAVs</a>
         <a className="btn btn-ghost text-xl">PEVs</a>
-        <a className="btn btn-ghost text-xl">Shop</a>
+        <a href="./shop" className="btn btn-ghost text-xl">
+          Shop
+        </a>
         <a className="btn btn-ghost text-xl">Makerspace</a>
       </div>
       <div className="navbar-end">
