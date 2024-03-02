@@ -26,6 +26,8 @@ export default function Shop() {
     setShowModal(false);
   };
 
+  console.log("rebuilt");
+
   return (
     <>
       <div className="mt-30 flex flex-wrap items-center justify-between bg-gradient-to-b from-[#AEAEAE] via-[#134790] to-[#134790] px-[6rem] py-[10rem]">
@@ -70,29 +72,18 @@ export default function Shop() {
         </div>
       )}
       {showModal && (
-        <div className="modal fixed left-0 top-0 z-50 h-full w-full bg-blue bg-opacity-50">
-          <div className="modal-box m-auto h-1/2 w-1/2 bg-neutral-100 p-8">
-            <div className="font-display text-4xl">ZIT Project</div>
-            <div className="font-body text-xl">
-              The ZOTBotics Innovation Team (ZIT) is a group of students who
-              work on projects that are not directly related to the competition
-              robots. These projects can range from developing a new piece of
-              software to creating a new piece of hardware. The ZIT team is
-              responsible for developing the ZOTBotics website, the ZOTBotics
-              app, and the ZOTBotics store. The ZIT team is also responsible for
-              developing the ZOTBotics social media presence and the ZOTBotics
-              brand. The ZIT team is also responsible for developing the
-              ZOTBotics website, the ZOTBotics app, and the ZOTBotics store. The
-              ZIT team is also responsible for developing the ZOTBotics social
-              media presence and the ZOTBotics brand.
-            </div>
-            <button
-              className="btn mt-4 bg-yellow text-xl font-normal text-neutral-800 shadow hover:bg-yellow hover:bg-opacity-60"
-              onClick={closeModalHandler}
-            >
-              I'm Interested
-            </button>
-          </div>
+        <div className="modal-box m-auto h-1/2 w-1/2 bg-neutral-100 p-8">
+          The ZOTBotics Innovation Team (ZIT) is a group of students who work on
+          projects that are not directly related to the competition robots.
+          These projects can range from developing a new piece of software to
+          creating a new piece of hardware. The ZIT team is responsible for
+          developing the ZOTBotics website, the ZOTBotics app, and the ZOTBotics
+          store. The ZIT team is also responsible for developing the ZOTBotics
+          social media presence and the ZOTBotics brand. The ZIT team is also
+          responsible for developing the ZOTBotics website, the ZOTBotics app,
+          and the ZOTBotics store. The ZIT team is also responsible for
+          developing the ZOTBotics social media presence and the ZOTBotics
+          brand.
         </div>
       )}
     </>

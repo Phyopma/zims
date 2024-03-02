@@ -41,7 +41,7 @@ export default function ShopItem({
           onAddToCartHandler(itemName);
         }}
       >
-        I'm Interested
+        I&apos;m Interested
       </button>
     </div>
   );
