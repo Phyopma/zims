@@ -45,6 +45,15 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    animation: {
+      lift: "lift 0.5s ease-in-out",
+    },
+    keyframes: {
+      lift: {
+        "0%": { transform: "translateY(0)", opacity: "1" },
+        "100%": { transform: "translateY(-10px)", opacity: "1" },
+      },
+    },
   },
   plugins: [require("daisyui"), require("tailwindcss-animated")],
 };
