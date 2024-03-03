@@ -1,8 +1,10 @@
+import { ShopItemProduct } from "../page";
 interface ShopItemProps {
   onAddToCartHandler: (item: string) => void;
   itemName: string;
-  openModalHandler: () => void;
+  openModalHandler: (product: ShopItemProduct) => void;
   closeModalHandler: () => void;
+  productInfo: ShopItemProduct;
 }
 
 export default function ShopItem({
@@ -10,11 +12,17 @@ export default function ShopItem({
   itemName,
   openModalHandler,
   closeModalHandler,
+  productInfo,
 }: ShopItemProps) {
   return (
     <div
-      className=" m-6 inline-block rounded-lg bg-blue p-4 transition-all hover:-translate-y-4 hover:shadow-lg"
-      onClick={openModalHandler}
+      className=" m-6 inline-block rounded-lg bg-blue p-5 transition-all hover:-translate-y-4 hover:cursor-pointer hover:shadow-lg"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("clicked");
+        openModalHandler(productInfo);
+      }}
     >
       <div className=" mb-4 h-40 w-72 rounded-lg bg-neutral-200"></div>
       <div className="text-start font-display text-4xl">{itemName}</div>
