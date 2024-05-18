@@ -1,22 +1,22 @@
 import { ShopItemProduct } from "../page";
 interface ShopItemProps {
-  onAddToCartHandler: (item: string) => void;
   itemName: string;
   openModalHandler: (product: ShopItemProduct) => void;
   closeModalHandler: () => void;
   productInfo: ShopItemProduct;
+  tags: string[];
 }
 
 export default function ShopItem({
-  onAddToCartHandler,
   itemName,
   openModalHandler,
   closeModalHandler,
   productInfo,
+  tags,
 }: ShopItemProps) {
   return (
     <div
-      className=" m-6 inline-block rounded-lg bg-blue p-5 transition-all hover:-translate-y-4 hover:cursor-pointer hover:shadow-lg"
+      className="card m-6 inline-block rounded-lg bg-blue p-5 shadow-sm transition-all hover:-translate-y-4 hover:cursor-pointer hover:shadow-lg"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -28,6 +28,37 @@ export default function ShopItem({
       <div className="text-start font-display text-4xl">{itemName}</div>
       <div className="mb-6 font-body text-xl text-neutral-200/50">
         1st Makerspace Reserve
+      </div>
+      {/* map chips from the tags */}
+      <div className="flex flex-wrap gap-2">
+        {tags.includes("ZIT") ? (
+          <div className="badge badge-outline my-1 border-yellow pr-2 text-sm text-neutral-200/50 text-yellow">
+            ZIT
+          </div>
+        ) : (
+          <></>
+        )}
+        {tags.includes("ACE") ? (
+          <div className="badge badge-outline my-1 border-red pr-2 text-sm text-neutral-200/50 text-red">
+            ACE
+          </div>
+        ) : (
+          <></>
+        )}
+        {tags.includes("UAV") ? (
+          <div className="badge badge-outline my-1 border-green pr-2 text-sm text-green text-neutral-200/50">
+            UAV
+          </div>
+        ) : (
+          <></>
+        )}
+        {tags.includes("PEV") ? (
+          <div className="badge badge-outline my-1 border-orange pr-2 text-sm text-neutral-200/50 text-orange">
+            PEV
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="flex w-full flex-col lg:flex-row">
         <div className="h-fit w-fit place-items-start  ">
@@ -44,9 +75,9 @@ export default function ShopItem({
         className="btn mt-4 
         bg-yellow text-xl font-normal text-neutral-800 shadow hover:bg-yellow hover:bg-opacity-60"
         onClick={(e) => {
-          e.preventDefault();
+          window.open("https://www.google.com/forms/about/", "_blank");
           e.stopPropagation();
-          onAddToCartHandler(itemName);
+          // push this link https://www.google.com/forms/about/
         }}
       >
         I&apos;m Interested

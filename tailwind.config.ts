@@ -7,6 +7,26 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    daisyui: {
+      themes: [
+        {
+          mytheme: {
+            primary: "#FFD30A",
+            secondary: "#1B3D6D",
+            accent: "#37cdbe",
+            neutral: "#3d4451",
+            yellow: "#FFD30A",
+            green: "#00FF00",
+            red: "#FD0000",
+            blue: "#1B3D6D",
+            "blue-dark": "#101835",
+            "blue-light": "#152E51",
+            orange: "#FE6A31",
+          },
+        },
+      ],
+    },
+
     colors: {
       primary: {
         DEFAULT: "#FFD30A",
@@ -39,6 +59,16 @@ const config: Config = {
       sans: ["Happy_Monkey"],
     },
     extend: {
+      colors: {
+        primary: "#FFD30A",
+        secondary: "#1B3D6D",
+        "yellow-construction": "#FEC917",
+        "blue-dark": "#101835",
+        "blue-light": "#152E51",
+        red: "#FD0000",
+        orange: "#FE6A31",
+        green: "#00FF00",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

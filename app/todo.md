@@ -1,2 +1,0 @@
-- [ ] Build officers page
-- [ ] Restore scroll position on slideshow

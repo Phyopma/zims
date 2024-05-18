@@ -3,7 +3,6 @@ import { useState } from "react";
 import ShopItem from "./components/ShopItem";
 import quote from "../Images/quote.png";
 import Image from "next/image";
-import { list } from "postcss";
 
 export interface ShopItemProduct {
   product1: string;
@@ -61,14 +60,7 @@ const product4: ShopItemProduct = {
 };
 
 export default function Shop() {
-  const [cart, setCart] = useState<Set<string>>(new Set());
   const [curProduct, setCurProduct] = useState<ShopItemProduct>(product1);
-
-  const addToCartHandler = (item: string) => {
-    setCart((cart) => new Set(cart).add(item));
-    console.log("added iten to cart");
-    console.log("new size of cart", cart.size);
-  };
 
   // Modal state variable
   const [showModal, setShowModal] = useState<Boolean>(false);
@@ -86,52 +78,53 @@ export default function Shop() {
   console.log("rebuilt");
 
   return (
-    <>
-      <div className="mt-30 flex flex-wrap items-center justify-between bg-gradient-to-b from-[#AEAEAE] to-[#134790] px-[6rem] py-[10rem]">
+    <div className="mt-[5rem] bg-gradient-to-b from-[#AEAEAE] to-[#134790] px-[6rem] py-[2rem] pb-[10rem]">
+      <label className=" form-control m-6 w-full max-w-xs ">
+        <div className="label">
+          <span className="label-text text-blue-dark">
+            Filter Items by Club
+          </span>
+        </div>
+        <select className=" select select-bordered text-neutral-100/85">
+          <option disabled>Pick one</option>
+          <option>All</option>
+          <option>ZITs</option>
+          <option>ACEs</option>
+          <option>UAVs</option>
+          <option>PEVs</option>
+        </select>
+      </label>
+      <div className=" flex flex-wrap items-center justify-between  ">
         <ShopItem
-          onAddToCartHandler={addToCartHandler}
           openModalHandler={openModalHandler}
           closeModalHandler={closeModalHandler}
           productInfo={product1}
+          tags={["ZIT"]}
           itemName="ZIT Project"
         />
         <ShopItem
-          onAddToCartHandler={addToCartHandler}
           openModalHandler={openModalHandler}
           closeModalHandler={closeModalHandler}
           productInfo={product2}
+          tags={["ACE"]}
           itemName="ACE Project"
         />
         <ShopItem
-          onAddToCartHandler={addToCartHandler}
           openModalHandler={openModalHandler}
           closeModalHandler={closeModalHandler}
           productInfo={product3}
+          tags={["UAV"]}
           itemName="UAV Project"
         />
         <ShopItem
-          onAddToCartHandler={addToCartHandler}
           openModalHandler={openModalHandler}
           closeModalHandler={closeModalHandler}
           productInfo={product4}
+          tags={["PEV"]}
           itemName="PEV Project"
         />
       </div>
-      {cart.size > 0 && (
-        <div
-          className="btn fixed right-8 top-24 border-none bg-[#306EC6] px-4 text-xl font-normal  text-neutral-100 shadow hover:bg-[#306EC6] hover:bg-opacity-60"
-          onClick={() => console.log(cart)}
-        >
-          <div className="inline ">Get a quote </div>
-          <Image
-            src={quote}
-            className=" invert"
-            alt="quote"
-            width={24}
-            height={24}
-          />
-        </div>
-      )}
+
       {showModal && (
         <div
           className="fixed top-0 z-10 h-screen w-screen bg-blue/60 opacity-100 transition-all "
@@ -166,6 +159,6 @@ export default function Shop() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
