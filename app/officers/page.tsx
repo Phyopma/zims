@@ -8,26 +8,8 @@ export interface ClubRowProps {
   clubName: string;
   officers: Officer[];
 }
-// Gialan Tonthat
-// 4th Year | Music & Film/Media Studies
-// Merger / President / Project Manager
-// Owen Yee
-// 4th Year | Mechanical Engineering
-// Vice President | Project Lead
-// Abrez Hussain
-// 2nd Year | Electrical Engineering
-// Treasurer
-// Maxwell Berger
-// 3rd Year | Mechanical Engineering
-// Project Lead
-// Kian Miremadi
-// 2nd Year | Biomedical Engineering
-// Project Lead
-// Francis Ung
-// UCI Alum ‘23
-// Graduate Advisor
 
-const ZitRow: ClubRowProps = {
+export const ZitRow: ClubRowProps = {
   clubName: "ZIT",
   officers: [
     {
@@ -42,26 +24,7 @@ const ZitRow: ClubRowProps = {
   ],
 };
 
-// Gialan Tonthat
-// 4th Year | Music & Film/Media Studies
-// Co-Founder | President | Project Manager
-// Nam de Porceri
-// 4th Year | Materials Science & Engineering
-// Co-Founder | Vice President | Project Lead
-// Nova McNaught
-// 4th | Mechanical Engineering
-// Treasurer
-// Filiberto Alvarez
-// 3rd Year | Computer Engineering
-// Project Lead
-// Kenzo Fraser
-// 2nd Year | Aerospace Engineering
-// Project Lead
-// Jake Chutney
-// UCI Machine Shop Manager
-// Faculty Advisor
-
-const AceRow: ClubRowProps = {
+export const AceRow: ClubRowProps = {
   clubName: "ACE",
   officers: [
     {
@@ -79,26 +42,7 @@ const AceRow: ClubRowProps = {
   ],
 };
 
-// Oscar Zaragoza
-// 4th Year | Computer Science
-// Co-Merger | President
-// Gialan Tonthat
-// 4th Year | Music & Film/Media Studies
-// Co-Merger | Vice President | Project Manager
-// Jason Ho
-// 3rd Year | Computer Science
-// Treasurer
-// Kian Miramedi
-// 2nd Year | Biomedical Engineering
-// Project Mentor
-// Bogdan Kovtun
-// 3rd Year | Mechanical Engineering
-// Senior Design Liason
-// Peter Burke
-// Professor of Electric Engineering & Computer Science
-// Faculty Advisor
-
-const UAVsRow: ClubRowProps = {
+export const UAVsRow: ClubRowProps = {
   clubName: "UAVs",
   officers: [
     { name: "Oscar Zaragoza", officerDesc: "Co-Merger | President" },
@@ -113,27 +57,7 @@ const UAVsRow: ClubRowProps = {
   ],
 };
 
-// PEVs
-// Gialan Tonthat
-// 4th year | Music & Film/Media Studies
-// Founder | President | Group Ride Lead
-// Maxwell Berger
-// 3rd Year | Mechanical Engineering
-// Vice President | Group Ride Lead
-// Maximilian Chu
-// 4th Year | Psychology
-// Treasurer
-// Aiden Doyen
-// 2nd Year | Undeclared
-// Group Ride Lead
-// Calvin Nguyen
-// 3rd Year | Computer Engineering
-// Group Ride Lead
-// Jim Jones
-// Professor of Informatics
-// Faculty Advisor
-
-const PEVsRow: ClubRowProps = {
+export const PEVsRow: ClubRowProps = {
   clubName: "PEVs",
   officers: [
     {
@@ -151,32 +75,7 @@ const PEVsRow: ClubRowProps = {
   ],
 };
 
-// ZOTBotics’ Makerspace
-// Gialan Tonthat
-// 4th Year | Music & Film/Media Studies
-// Founder | Makerspace Manager
-// Kian Miramedi
-// 2nd Year | Biomedical Engineering
-// Makerspace Staff
-// Nam de Porceri
-// 4th Year | Materials Science & Engineering
-// Makerspace Staff
-// Francis Ung
-// UCI Alum ‘23
-// Makerspace Advisor
-// Moses Choi
-// Lab Technician, FabWorks
-// Facility Supervisor
-// Derek Irwin
-// Lab Technician, FabWorks
-// Facility Supervisor
-// Ben Dolan
-// Director of FabWorks
-// ICF Facility Manager
-// Board Application
-// So you think you got what it takes to lead? Apply if you dare!
-
-const MakerspaceRow: ClubRowProps = {
+export const MakerspaceRow: ClubRowProps = {
   clubName: "Makerspace",
   officers: [
     {
@@ -195,7 +94,7 @@ const MakerspaceRow: ClubRowProps = {
 export default function Officers() {
   return (
     <div className="bg-blue-dark px-12">
-      <p className="font-display text-center text-8xl pt-32 pb-14">Officers</p>
+      <p className="pb-14 pt-32 text-center font-display text-8xl">Officers</p>
       <ClubRow {...ZitRow} />
       <ClubRow {...AceRow} />
       <ClubRow {...UAVsRow} />

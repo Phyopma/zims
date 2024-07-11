@@ -7,7 +7,7 @@ const Slideshow: React.FC = ({}) => {
   const [curItem, setCurItem] = useState("item1");
   const [scrollX, setScrollX] = useState(0);
   const slideshowRef = useRef<null | HTMLDivElement>(null);
-  const numberOfItems = 3;
+  const numberOfItems = 2;
 
   const handleScrollX = () => {
     // Update the scrollX position whenever a scroll event occurs
@@ -45,21 +45,16 @@ const Slideshow: React.FC = ({}) => {
       >
         <div id="item1" className="carousel-item w-full">
           <Event
-            headline="UAVs’ RC Squadron"
-            body="UAVs@UCI is proud to partner up with UAV Forge, a senior design project team program specializing in competition autonomous drones to co-host a drone project program open for members of any RC-flying experience levels to build and fly their first UAV! 
+            headline="ACE’s Combotics Battalion"
+            body="ACE members are introduced to the more advanced aspects of materials science and engineering as the demands of combat robotics deem necessary: metal fabrication, enhanced plastics to 3D-print, mechanical stresses via melee impacts. The presence of competition ranging from local to international scales necessitate greater standards of computer-aided design, including simulations for stress-testing. 
+
             "
           />
         </div>
         <div id="item2" className="carousel-item w-full">
           <Event
-            headline="Budget-Friendly Plans"
-            body="Open discussions for financial plans allow members to find their sweet spot in a budget-friendly entrance into the hobby of RC flying!"
-          />
-        </div>
-        <div id="item3" className="carousel-item w-full">
-          <Event
-            headline="UAV Flight Sesh"
-            body="UAV at UCI looks to host more in-depth inquiries on the electrical and computer engineering skill sets required to assemble, maintain, and service the delicate machinery necessary to properly operate an long-range, autonomous drone capable of performing advanced maneuvers such as GPS-tracking, obstacle-avoiding, and target recognition. Members of the sub-program will receive recommendations and advancements to join the UAV Forge team."
+            headline="Defend and serve your campus!"
+            body="Like real-life combat sports, combotics are divided into various weight class divisions incoming ACE project members with a 1-lb ‘antweight’ to design, fabricate, test, and prepare for in-house tournaments with neighboring teams. to other universities or local events. Subsequent completions of the antweight grants promotion to larger weight classes: 3-lb ‘beetleweight’ , 12-lb ‘hobbyweight’, and the pinnacle 250-lb ‘heavyweight’ to span from local events, college derbies, or to international, television show-running tournaments like Battlebots. "
           />
         </div>
       </div>

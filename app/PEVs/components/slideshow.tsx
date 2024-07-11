@@ -45,21 +45,21 @@ const Slideshow: React.FC = ({}) => {
       >
         <div id="item1" className="carousel-item w-full">
           <Event
-            headline="UAVs’ RC Squadron"
-            body="UAVs@UCI is proud to partner up with UAV Forge, a senior design project team program specializing in competition autonomous drones to co-host a drone project program open for members of any RC-flying experience levels to build and fly their first UAV! 
-            "
+            headline="UCI student chaper of SoCal’s public PEV community"
+            body="PEVs at UCI is home to the massively growing community hub of UCI students inspired to rethink the way they move: faster, longer, cleaner, smaller. Founded on the thriving prospect of promoting the “movement”, PEVUCI welcomes all fellow Anteater to fun social events like group rides and race track sessions to celebrate the thrill of personal electric vehicles."
           />
         </div>
         <div id="item2" className="carousel-item w-full">
           <Event
-            headline="Budget-Friendly Plans"
-            body="Open discussions for financial plans allow members to find their sweet spot in a budget-friendly entrance into the hobby of RC flying!"
+            headline="Group rides, Intro2Speed, and more!"
+            body="From the beautiful landscapes that sculpt our hometown Irvine to even greater unexplored territories of off-campus events hosted by public communities of Southern California. "
           />
         </div>
         <div id="item3" className="carousel-item w-full">
           <Event
-            headline="UAV Flight Sesh"
-            body="UAV at UCI looks to host more in-depth inquiries on the electrical and computer engineering skill sets required to assemble, maintain, and service the delicate machinery necessary to properly operate an long-range, autonomous drone capable of performing advanced maneuvers such as GPS-tracking, obstacle-avoiding, and target recognition. Members of the sub-program will receive recommendations and advancements to join the UAV Forge team."
+            headline="PEVs’ Marketplace"
+            body="In affiliating with ZOTBotics’ Network and by extension co-owning UCI’s first student-led makerspace, PEVUCI offers a ‘dealership’ and ‘mechanics shop’ for clients to offer their interest in a new electric vehicle to own for cheap and service for an electric vehicle to be inspected or repaired, respectively. 
+"
           />
         </div>
       </div>

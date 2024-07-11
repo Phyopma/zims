@@ -2,7 +2,11 @@ import Image from "next/image";
 import ZITsrc from "../Images/ZIT.png";
 import Slideshow from "./components/slideshow";
 
+import Officers, { ZitRow } from "../officers/page";
+import ClubRow from "../officers/components/ClubRow";
+
 export default function ZITPage() {
+  ZitRow.clubName = "";
   return (
     <>
       <div className="mt-20  bg-gradient-to-br from-[#101835] via-[#134790] to-[#134790] p-12">
@@ -52,6 +56,7 @@ export default function ZITPage() {
         <p className="text-center font-display text-6xl font-bold">Why ZIT?</p>
       </div>
       <Slideshow />
+      <ClubRow {...ZitRow} />
     </>
   );
 }

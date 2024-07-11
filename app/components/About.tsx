@@ -8,7 +8,7 @@ export default function About() {
     "Learn something fun, make something fun, and have fun!",
   ];
 
-  let descMapping = aboutDesc.map((desc) => {
+  const descMapping = aboutDesc.map((desc) => {
     return (
       <li className="py-2" key={desc}>
         <p className="text-xl text-neutral-400">{desc}</p>
@@ -27,26 +27,26 @@ export default function About() {
 
   return (
     <div className="min-h-[70vh] min-w-full bg-blue-dark">
-      <div className="text-center w-9/12 mx-auto my-12">
-        <h1 className="text-5xl font-display font-bold my-6">
+      <div className="mx-auto my-12 w-9/12 text-center">
+        <h1 className="my-6 font-display text-5xl font-bold">
           The go-to robotics community at UCI. By Anteaters, for Anteaters.
         </h1>
       </div>
-      <div className="text-start w-9/12 mx-auto my-12">
-        <h1 className="text-3xl font-display my-6">
+      <div className="mx-auto my-12 w-9/12 text-start">
+        <h1 className="my-6 font-display text-3xl">
           Calling all aspiring makers inspired in the “fun engineering” world of
           robotics…
         </h1>
       </div>
-      <div className="text-center w-9/12 mx-auto my-12">
-        <div className="flex  py-4 flex-row">
+      <div className="mx-auto my-12 w-9/12 text-center">
+        <div className="flex  flex-row py-4">
           <div className="flex-1">
-            <ul className="font-body text-2xl list-disc text-yellow py-6 text-start">
+            <ul className="list-disc py-6 text-start font-body text-2xl text-yellow">
               {descMapping}
             </ul>
           </div>
           <div className="flex-1">
-            <div className="mx-8 w-full rounded-lg h-full bg-yellow"></div>
+            <div className="mx-8 h-full w-full rounded-lg bg-yellow"></div>
           </div>
         </div>
       </div>
