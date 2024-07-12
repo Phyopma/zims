@@ -2,7 +2,7 @@ import Image from "next/image";
 import UAVsrc from "../Images/ZIT.png";
 import Slideshow from "./components/slideshow";
 
-import { UAVsRow } from "../officers/page";
+import { UAVsRow } from "../constants";
 import ClubRow from "../officers/components/ClubRow";
 
 export default function UAVPage() {

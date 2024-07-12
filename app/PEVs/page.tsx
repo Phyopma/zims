@@ -2,7 +2,7 @@ import Image from "next/image";
 import PEVsrc from "../Images/ZIT.png";
 import Slideshow from "./components/slideshow";
 
-import { PEVsRow } from "../officers/page";
+import { PEVsRow } from "../constants";
 import ClubRow from "../officers/components/ClubRow";
 
 export default function PEVPage() {

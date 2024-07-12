@@ -2,7 +2,7 @@ import Image from "next/image";
 import ACEsrc from "../Images/ACE.png";
 import Slideshow from "./components/slideshow";
 
-import { AceRow } from "../officers/page";
+import { AceRow } from "../constants";
 import ClubRow from "../officers/components/ClubRow";
 
 export default function ZITPage() {

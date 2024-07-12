@@ -2,7 +2,7 @@ import Image from "next/image";
 import ZITsrc from "../Images/ZIT.png";
 import Slideshow from "./components/slideshow";
 
-import Officers, { ZitRow } from "../officers/page";
+import { ZitRow } from "../constants";
 import ClubRow from "../officers/components/ClubRow";
 
 export default function ZITPage() {
