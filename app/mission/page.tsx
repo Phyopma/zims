@@ -2,21 +2,23 @@ import React from "react";
 import Card from "./components/card";
 import ACEImage from "../Images/ACE.png";
 import Slideshow from "./components/slideshow";
+import { HeroParallaxDemo } from "./components/HeroParralax";
 
 const OurMissionPage: React.FC = () => {
   return (
     <>
-      <div className="min-h-[50vh] min-w-full bg-blue-light mt-[74px] flex justify-center items-center">
+      <HeroParallaxDemo />
+      <div className="mt-[74px] flex min-h-[50vh] min-w-full items-center justify-center bg-blue-light">
         {/* make a large heading using font display that says Our Mission */}
         <div className="text-center">
-          <h1 className="text-8xl font-display font-bold">Our Mission</h1>
+          <h1 className="font-display text-8xl font-bold">Our Mission</h1>
         </div>
       </div>
-      <div className="bg-blue-dark min-w-full pt-12 px-12 text-center">
-        <p className="font-display text-6xl pb-6">
+      <div className="min-w-full bg-blue-dark px-12 pt-12 text-center">
+        <p className="pb-6 font-display text-6xl">
           4 clubs, 1 makerspace, 1 network
         </p>
-        <p className="font-body text-2xl p-2">
+        <p className="p-2 font-body text-2xl">
           ZOTBotics’ Network at UCI represents an association of 4 distinct
           engineering student organizations working hand in hand to promote
           hands-on project experience and foster creative, self-spirited
@@ -26,7 +28,7 @@ const OurMissionPage: React.FC = () => {
           for passionate students to find the most accessible route towards
           engineers of their own making.
         </p>
-        <p className="font-display text-5xl pt-16 pb-8">
+        <p className="pb-8 pt-16 font-display text-5xl">
           Our Foundational Values
         </p>
         {/* create a horizantal flex box where the items are centered and spread among the center */}
@@ -47,7 +49,7 @@ const OurMissionPage: React.FC = () => {
             image={ACEImage}
           />
         </div>
-        <p className="text-center text-6xl pt-16 p-4 font-display">
+        <p className="p-4 pt-16 text-center font-display text-6xl">
           Club Events
         </p>
       </div>

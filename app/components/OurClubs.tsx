@@ -140,7 +140,7 @@ Logo as main visual, supporting photos of PEVs events
 
   return (
     // <div className="py-12 w-full bg-gradient-to-b to-blue from-[#838383]">
-    <div className="min-h-[40rem] w-screen bg-blue py-12">
+    <div id="our-clubs" className="min-h-[40rem] w-screen bg-blue py-12">
       <div className="relative z-10 flex flex-col items-center justify-center ">
         <h1 className="font-display text-5xl font-bold">
           Pick a club, any club
