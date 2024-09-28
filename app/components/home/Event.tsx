@@ -15,7 +15,7 @@ const Event = ({ headline, body, img }: EventProps) => {
         <div className="absolute inset-0 z-0 flex justify-center">
           <Image
             src={img}
-            alt={img}
+            alt={"Event Image"}
             objectFit="contain"
             height={1900}
             className="opacity-30"
