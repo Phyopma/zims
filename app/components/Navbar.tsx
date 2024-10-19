@@ -55,7 +55,9 @@ export default function Navbar() {
         <a href="./shop" className="btn btn-ghost text-3xl">
           Shop
         </a>
-        <a className="btn btn-ghost text-3xl">Makerspace</a>
+        <a href="/maker-space" className="btn btn-ghost text-3xl">
+          Makerspace
+        </a>
       </div>
       <div className="navbar-end">
         <a
