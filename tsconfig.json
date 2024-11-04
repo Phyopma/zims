@@ -28,6 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/maker-space/components/hdr-display.jsx",
+    "public/tools/3d-printer.tsx",
   ],
   "exclude": ["node_modules"],
 }
