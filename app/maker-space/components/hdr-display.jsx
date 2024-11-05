@@ -29,35 +29,18 @@ const HDRBackground = () => {
   );
 };
 
-// const CameraController = () => {
-//   const { camera, gl } = useThree();
-//   const ref = useRef();
-
-// useEffect(() => {
-//   ref.current.addEventListener("wheel", (e) => {
-//     camera.position.x += e.deltaY * 0.01;
-//     console.log("controlled", camera.position.x);
-//     e.preventDefault();
-//   });
-// }, []);
-
-//   return (
-
-//   );
-// };
-
 const ScrollControlledCamera = () => {
   const { camera } = useThree();
-  const cameraRotationRef = useRef(0); // Keep track of the camera rotation
+  const cameraRotationRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = (event) => {
-      const delta = event.deltaY * 0.005; // Change this scale factor as needed
-      cameraRotationRef.current += delta; // Incremental adjustment
+      const delta = event.deltaY * 0.005;
+      cameraRotationRef.current += delta;
       cameraRotationRef.current = Math.max(
         Math.min(cameraRotationRef.current, Math.PI),
         -Math.PI,
-      ); // Clamp the value between -π and π
+      );
     };
 
     window.addEventListener("wheel", handleScroll);
@@ -65,7 +48,6 @@ const ScrollControlledCamera = () => {
   }, []);
 
   useFrame(() => {
-    // Apply the rotation to the camera's Y axis
     camera.rotation.y = cameraRotationRef.current;
   });
 
@@ -77,21 +59,25 @@ const HDRDisplay = () => {
 
   useEffect(() => {
     const handleScroll = (event) => {
-      const delta = event.deltaY * 0.005;
+      var delta;
+      if (event.deltaY < 0) {
+        delta = event.deltaY * 0.001;
+      } else {
+        delta = event.deltaY * 0.005;
+      }
       scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
+      console.log(scrollY.get());
     };
 
     window.addEventListener("wheel", handleScroll);
     return () => window.removeEventListener("wheel", handleScroll);
   }, []);
 
-  // const scrollYProgress = useSpring(scrollY, {
-  //   damping: 10,
-  //   stiffness: 100,
-  // });
-  const opacity = useTransform(scrollY, [0, 0.1, 0.3, 0.3], [0, 0, 1, 1]);
-
-  // const padding = useTransform(scrollYProgress, [0, 0.8], [0, 150]);
+  const scrollYProgress = useSpring(scrollY, {
+    damping: 10,
+    stiffness: 100,
+  });
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <motion.div
