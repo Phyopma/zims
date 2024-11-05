@@ -15,7 +15,7 @@ export default function MainScreen() {
     redirect("/"); // Redirect to the home page
   }
   return (
-    <div className="relative inset-0 h-[730px] w-full overflow-hidden bg-blue-dark scrollbar-none">
+    <div className="scrollbar-none relative inset-0 h-[730px] w-full overflow-y-hidden bg-blue-dark">
       <MakerSpaceHeader />
       <HDRDisplay />
     </div>

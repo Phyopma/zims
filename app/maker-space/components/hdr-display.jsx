@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState, useRef, use } from "react";
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, CameraControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -29,18 +29,48 @@ const HDRBackground = () => {
   );
 };
 
-const ScrollControlledCamera = () => {
+const ScrollControlledCamera = ({ cameraRotationYRef }) => {
   const { camera } = useThree();
-  const cameraRotationRef = useRef(0);
+
+  const cameraRotationXRef = useRef(0);
+  const rotationCompeteRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = (event) => {
-      const delta = event.deltaY * 0.005;
-      cameraRotationRef.current += delta;
-      cameraRotationRef.current = Math.max(
-        Math.min(cameraRotationRef.current, Math.PI),
-        -Math.PI,
-      );
+      const delta = event.deltaY * 0.004;
+
+      if (delta > 0) {
+        // Scrolling down: Rotate Y first, then pan down
+        if (!rotationCompeteRef.current) {
+          cameraRotationYRef.current += delta;
+          if (cameraRotationYRef.current >= Math.PI) {
+            cameraRotationYRef.current = Math.PI;
+            rotationCompeteRef.current = true;
+          }
+        } else {
+          cameraRotationXRef.current += delta;
+          cameraRotationXRef.current = Math.max(
+            Math.min(cameraRotationXRef.current, 1),
+            0,
+          );
+        }
+      } else {
+        // Scrolling up: Pan up first, then rotate back
+        if (cameraRotationXRef.current > 0 && rotationCompeteRef.current) {
+          cameraRotationXRef.current += delta;
+          cameraRotationXRef.current = Math.max(
+            Math.min(cameraRotationXRef.current, 1),
+            0,
+          );
+        } else {
+          rotationCompeteRef.current = false;
+          // Once panning up is done, rotate back on the Y-axis
+          cameraRotationYRef.current += delta;
+          if (cameraRotationYRef.current <= -Math.PI) {
+            cameraRotationYRef.current = -Math.PI;
+          }
+        }
+      }
     };
 
     window.addEventListener("wheel", handleScroll);
@@ -48,7 +78,8 @@ const ScrollControlledCamera = () => {
   }, []);
 
   useFrame(() => {
-    camera.rotation.y = cameraRotationRef.current;
+    camera.rotation.y = cameraRotationYRef.current;
+    camera.rotation.x = cameraRotationXRef.current;
   });
 
   return null;
@@ -56,17 +87,18 @@ const ScrollControlledCamera = () => {
 
 const HDRDisplay = () => {
   const scrollY = useMotionValue(0);
+  const cameraRotationYRef = useRef(-Math.PI);
 
   useEffect(() => {
     const handleScroll = (event) => {
-      var delta;
+      var delta = event.deltaY * 0.005;
       if (event.deltaY < 0) {
-        delta = event.deltaY * 0.001;
+        if (cameraRotationYRef.current <= -Math.PI) {
+          scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
+        }
       } else {
-        delta = event.deltaY * 0.005;
+        scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
       }
-      scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
-      console.log(scrollY.get());
     };
 
     window.addEventListener("wheel", handleScroll);
@@ -81,7 +113,7 @@ const HDRDisplay = () => {
 
   return (
     <motion.div
-      className="h-[900px] w-full"
+      className="h-[900px] w-full overflow-hidden"
       // style={{ opacity }}
       style={{
         opacity,
@@ -89,8 +121,8 @@ const HDRDisplay = () => {
       }}
     >
       <div className="mx-auto flex h-full w-full justify-center">
-        <Canvas id="canvas">
-          <ScrollControlledCamera />
+        <Canvas id="canvas" className="hover:cursor-pointer">
+          <ScrollControlledCamera cameraRotationYRef={cameraRotationYRef} />
           <OrbitControls
             enableZoom={false}
             enableRotate={false}
