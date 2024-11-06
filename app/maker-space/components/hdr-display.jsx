@@ -1,7 +1,12 @@
 "use client";
 import { Suspense, useEffect, useState, useRef, use } from "react";
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
-import { OrbitControls, Html, CameraControls } from "@react-three/drei";
+import {
+  OrbitControls,
+  Html,
+  CameraControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
@@ -34,10 +39,6 @@ const ScrollControlledCamera = ({ cameraRotationYRef }) => {
 
   const cameraRotationXRef = useRef(0);
   const rotationCompeteRef = useRef(false);
-
-  useEffect(() => {
-    camera.position.set(0, 2, 5);
-  }, [camera]);
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -81,10 +82,14 @@ const ScrollControlledCamera = ({ cameraRotationYRef }) => {
     return () => window.removeEventListener("wheel", handleScroll);
   }, []);
 
+  useEffect(() => {
+    camera.position.set(camera.position.x, 50, camera.position.z);
+    camera.lookAt(0, 0, 0);
+  }, [camera]);
+
   useFrame(() => {
     camera.rotation.y = cameraRotationYRef.current;
     camera.rotation.x = cameraRotationXRef.current;
-    // camera.position.set(0, 0, 50);
   });
 
   return null;
@@ -126,6 +131,7 @@ const HDRDisplay = () => {
       <div className="mx-auto flex h-full w-full justify-center">
         <Canvas id="canvas" className="hover:cursor-pointer">
           <ScrollControlledCamera cameraRotationYRef={cameraRotationYRef} />
+          <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={75} />
           <OrbitControls
             enableZoom={false}
             enableRotate={false}
@@ -136,20 +142,13 @@ const HDRDisplay = () => {
           <pointLight position={[0, 5, 10]} intensity={1} />
           <Suspense fallback={null}>
             <HDRBackground />
-            <Hotspot position={[0, 0, 0]}>
-              <div className="flex min-w-full font-display text-3xl text-red ">
-                Meet the makerspace officers
+            <Hotspot position={[0, 0, 1000]}>
+              <div className="flex w-max justify-center">
+                <span className="flex  items-center justify-center text-center font-display text-6xl font-bold text-primary shadow-xl ">
+                  Meet the makerspace officers
+                </span>
               </div>
             </Hotspot>
-
-            {/* <Hotspot
-              position={[0, 0, 0]}
-              onClick={() => {
-                document.getElementById("modal").showModal();
-              }}
-            >
-              <ThreeDPrinter className="text-blue-500 h-8 w-8" />
-            </Hotspot> */}
           </Suspense>
         </Canvas>
         <dialog id="modal" className="modal">

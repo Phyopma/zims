@@ -10,10 +10,8 @@ export default function Hotspot({
   onClick: () => void;
 }) {
   return (
-    <Html position={position} center>
-      <div onClick={onClick} className="group relative cursor-pointer">
-        {children}
-      </div>
+    <Html className="w-full" position={position} center>
+      {children}
     </Html>
   );
 }
