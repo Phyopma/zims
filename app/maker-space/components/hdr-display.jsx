@@ -36,6 +36,10 @@ const ScrollControlledCamera = ({ cameraRotationYRef }) => {
   const rotationCompeteRef = useRef(false);
 
   useEffect(() => {
+    camera.position.set(0, 2, 5);
+  }, [camera]);
+
+  useEffect(() => {
     const handleScroll = (event) => {
       const delta = event.deltaY * 0.004;
 
@@ -80,6 +84,7 @@ const ScrollControlledCamera = ({ cameraRotationYRef }) => {
   useFrame(() => {
     camera.rotation.y = cameraRotationYRef.current;
     camera.rotation.x = cameraRotationXRef.current;
+    // camera.position.set(0, 0, 50);
   });
 
   return null;
@@ -91,7 +96,7 @@ const HDRDisplay = () => {
 
   useEffect(() => {
     const handleScroll = (event) => {
-      var delta = event.deltaY * 0.005;
+      var delta = event.deltaY * 0.002;
       if (event.deltaY < 0) {
         if (cameraRotationYRef.current <= -Math.PI) {
           scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
@@ -113,11 +118,9 @@ const HDRDisplay = () => {
 
   return (
     <motion.div
-      className="h-[900px] w-full overflow-hidden"
-      // style={{ opacity }}
+      className="h-[900px] w-full"
       style={{
         opacity,
-        // paddingTop: padding
       }}
     >
       <div className="mx-auto flex h-full w-full justify-center">
@@ -133,15 +136,20 @@ const HDRDisplay = () => {
           <pointLight position={[0, 5, 10]} intensity={1} />
           <Suspense fallback={null}>
             <HDRBackground />
+            <Hotspot position={[0, 0, 0]}>
+              <div className="flex min-w-full font-display text-3xl text-red ">
+                Meet the makerspace officers
+              </div>
+            </Hotspot>
 
-            <Hotspot
+            {/* <Hotspot
               position={[0, 0, 0]}
               onClick={() => {
                 document.getElementById("modal").showModal();
               }}
             >
               <ThreeDPrinter className="text-blue-500 h-8 w-8" />
-            </Hotspot>
+            </Hotspot> */}
           </Suspense>
         </Canvas>
         <dialog id="modal" className="modal">
