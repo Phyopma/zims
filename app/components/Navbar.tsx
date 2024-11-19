@@ -36,6 +36,16 @@ export default function Navbar() {
                     Officers
                   </a>
                 </li>
+                <li>
+                  <a className="text-3xl" href="/sponsors">
+                    Sponsors
+                  </a>
+                </li>
+                <li>
+                  <a className="text-3xl" href="./test">
+                    Test
+                  </a>
+                </li>
               </ul>
             </details>
           </li>
