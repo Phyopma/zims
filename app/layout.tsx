@@ -18,10 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="mytheme">
-      <body className={inter.className + "overscroll-y-none font-body"}>
+      <body className={inter.className + " overscroll-y-none font-body"}>
         <Navbar />
-        {/* <div className="min-h-[5rem]">{children}</div> */}
-        {children}
+        <div className="min-h-screen">{children}</div>
         <Footer />
       </body>
     </html>

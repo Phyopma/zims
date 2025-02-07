@@ -1,18 +1,11 @@
 "use client";
-import { Suspense, useEffect, useState, useRef, use } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas, useThree, useLoader, useFrame } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Html,
-  CameraControls,
-  PerspectiveCamera,
-} from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
-import Hotspot from "@/app/components/makerspace/hotspot";
-
-import ThreeDPrinter from "@/public/tools/3d-printer.svg";
+import EnhancedHotspot from "@/app/components/makerspace/enhanced-hotspot";
 
 const HDRBackground = () => {
   const texture = useLoader(
@@ -22,74 +15,59 @@ const HDRBackground = () => {
       loader.setDataType(THREE.FloatType);
     },
   );
-
   texture.mapping = THREE.EquirectangularReflectionMapping;
-
-  return (
-    <primitive
-      className="mx-auto flex items-center justify-center"
-      attach="background"
-      object={texture}
-    />
-  );
+  return <primitive attach="background" object={texture} />;
 };
 
-const ScrollControlledCamera = ({ cameraRotationYRef }) => {
+const ScrollControlledCamera = ({ scrollProgress }) => {
   const { camera } = useThree();
+  const initialRotation = useRef(0);
+  const targetRotation = useRef(Math.PI * 2);
+  const initialPosition = useRef({ x: 0, y: 30, z: 50 });
+  const fadeInComplete = useRef(false);
 
-  const cameraRotationXRef = useRef(0);
-  const rotationCompeteRef = useRef(false);
-
-  useEffect(() => {
-    const handleScroll = (event) => {
-      const delta = event.deltaY * 0.004;
-
-      if (delta > 0) {
-        // Scrolling down: Rotate Y first, then pan down
-        if (!rotationCompeteRef.current) {
-          cameraRotationYRef.current += delta;
-          if (cameraRotationYRef.current >= Math.PI) {
-            cameraRotationYRef.current = Math.PI;
-            rotationCompeteRef.current = true;
-          }
-        } else {
-          cameraRotationXRef.current += delta;
-          cameraRotationXRef.current = Math.max(
-            Math.min(cameraRotationXRef.current, 1),
-            0,
-          );
-        }
-      } else {
-        // Scrolling up: Pan up first, then rotate back
-        if (cameraRotationXRef.current > 0 && rotationCompeteRef.current) {
-          cameraRotationXRef.current += delta;
-          cameraRotationXRef.current = Math.max(
-            Math.min(cameraRotationXRef.current, 1),
-            0,
-          );
-        } else {
-          rotationCompeteRef.current = false;
-          // Once panning up is done, rotate back on the Y-axis
-          cameraRotationYRef.current += delta;
-          if (cameraRotationYRef.current <= -Math.PI) {
-            cameraRotationYRef.current = -Math.PI;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
-  }, []);
+  const easeInOutCubic = (t) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
 
   useEffect(() => {
-    camera.position.set(camera.position.x, 50, camera.position.z);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(
+      initialPosition.current.x,
+      initialPosition.current.y,
+      initialPosition.current.z,
+    );
+    camera.lookAt(0, 80, 0);
+    camera.rotation.x = Math.PI / 4;
+    camera.rotation.z = 0;
   }, [camera]);
 
   useFrame(() => {
-    camera.rotation.y = cameraRotationYRef.current;
-    camera.rotation.x = cameraRotationXRef.current;
+    const progress = scrollProgress.get();
+
+    if (progress <= 0.3) {
+      const phase1Progress = easeInOutCubic(progress / 0.3);
+      const lookAtY = THREE.MathUtils.lerp(80, 0, phase1Progress);
+      const tiltAngle = THREE.MathUtils.lerp(Math.PI / 4, 0, phase1Progress);
+      camera.lookAt(0, lookAtY, 0);
+      camera.rotation.x = tiltAngle;
+      return;
+    }
+
+    if (progress <= 0.6) {
+      camera.rotation.x = 0;
+      const phase2Progress = easeInOutCubic((progress - 0.3) / 0.3);
+      const rotationY = THREE.MathUtils.lerp(0, Math.PI * 2, phase2Progress);
+      camera.rotation.y = rotationY;
+      return;
+    }
+
+    const phase3Progress = easeInOutCubic((progress - 0.6) / 0.4);
+    const newY = THREE.MathUtils.lerp(30, 100, phase3Progress);
+    const newZ = THREE.MathUtils.lerp(50, 150, phase3Progress);
+    const tiltAngle = THREE.MathUtils.lerp(0, -Math.PI / 4, phase3Progress);
+
+    camera.position.set(0, newY, newZ);
+    camera.rotation.x = tiltAngle;
   });
 
   return null;
@@ -97,41 +75,77 @@ const ScrollControlledCamera = ({ cameraRotationYRef }) => {
 
 const HDRDisplay = () => {
   const scrollY = useMotionValue(0);
-  const cameraRotationYRef = useRef(-Math.PI);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTool, setSelectedTool] = useState(null);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
     const handleScroll = (event) => {
-      var delta = event.deltaY * 0.002;
-      if (event.deltaY < 0) {
-        if (cameraRotationYRef.current <= -Math.PI) {
-          scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
+      if (!animationComplete) {
+        event.preventDefault();
+        const currentScroll = scrollY.get();
+        const delta = event.deltaY * 0.0005;
+        const newScroll = Math.max(Math.min(currentScroll + delta, 1), 0);
+        scrollY.set(newScroll);
+
+        if (newScroll >= 1) {
+          setAnimationComplete(true);
+          document.body.style.overflow = "auto";
+        } else if (newScroll <= 0) {
+          document.body.style.overflow = "hidden";
         }
-      } else {
-        scrollY.set(Math.max(Math.min(scrollY.get() + delta, 1), 0));
+      } else if (window.scrollY === 0) {
+        setAnimationComplete(false);
+        document.body.style.overflow = "hidden";
+        scrollY.set(1);
       }
     };
 
-    window.addEventListener("wheel", handleScroll);
-    return () => window.removeEventListener("wheel", handleScroll);
-  }, []);
+    window.addEventListener("wheel", handleScroll, { passive: false });
 
-  const scrollYProgress = useSpring(scrollY, {
-    damping: 10,
-    stiffness: 100,
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+      document.body.style.overflow = "auto";
+    };
+  }, [animationComplete, scrollY]);
+
+  const tools = [
+    {
+      position: [-20, 10, -20],
+      icon: "/tools/3d-printer.svg",
+      title: "3D Printer",
+      description:
+        "High-precision 3D printing for rapid prototyping and custom parts manufacturing.",
+    },
+    {
+      position: [20, 15, -15],
+      icon: "/tools/saw.svg",
+      title: "Power Tools",
+      description:
+        "Professional-grade power tools for woodworking and metal fabrication.",
+    },
+    {
+      position: [-15, 20, 20],
+      icon: "/tools/glue-gun.svg",
+      title: "Assembly Station",
+      description:
+        "Fully equipped workstation for project assembly and detailed work.",
+    },
+  ];
+
+  const scrollProgress = useSpring(scrollY, {
+    damping: 30,
+    stiffness: 60,
   });
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const opacity = useTransform(scrollProgress, [0, 0.2], [0, 1]);
 
   return (
-    <motion.div
-      className="h-[900px] w-full"
-      style={{
-        opacity,
-      }}
-    >
-      <div className="mx-auto flex h-full w-full justify-center">
-        <Canvas id="canvas" className="hover:cursor-pointer">
-          <ScrollControlledCamera cameraRotationYRef={cameraRotationYRef} />
-          <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={75} />
+    <motion.div className="relative mt-20 h-full w-full" style={{ opacity }}>
+      <div className="relative mx-auto flex h-screen w-full justify-center">
+        <Canvas className="hover:cursor-pointer">
+          <ScrollControlledCamera scrollProgress={scrollProgress} />
+          <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={90} />
           <OrbitControls
             enableZoom={false}
             enableRotate={false}
@@ -142,26 +156,40 @@ const HDRDisplay = () => {
           <pointLight position={[0, 5, 10]} intensity={1} />
           <Suspense fallback={null}>
             <HDRBackground />
-            <Hotspot position={[0, 0, 1000]}>
-              <div className="flex w-max justify-center">
-                <span className="flex  items-center justify-center text-center font-display text-6xl font-bold text-primary shadow-xl ">
-                  Meet the makerspace officers
-                </span>
-              </div>
-            </Hotspot>
+            {tools.map((tool, index) => (
+              <EnhancedHotspot
+                key={index}
+                position={tool.position}
+                icon={tool.icon}
+                title={tool.title}
+                description={tool.description}
+                onClick={() => {
+                  setSelectedTool(tool);
+                  setShowModal(true);
+                }}
+              />
+            ))}
           </Suspense>
         </Canvas>
-        <dialog id="modal" className="modal">
-          <div className="modal-box">
-            <form method="dialog">
-              <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
-                ✕
-              </button>
-            </form>
-            <h3 className="text-lg font-bold">Hello!</h3>
-            <p className="py-4">Press ESC key or click on ✕ button to close</p>
+
+        {showModal && (
+          <div className="bg-black/50 fixed inset-0 z-50 flex items-center justify-center">
+            <div className="w-96 rounded-lg bg-neutral-900 p-6 shadow-xl">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-yellow">
+                  {selectedTool?.title}
+                </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-white text-2xl hover:text-yellow"
+                >
+                  ×
+                </button>
+              </div>
+              <p className="text-white">{selectedTool?.description}</p>
+            </div>
           </div>
-        </dialog>
+        )}
       </div>
     </motion.div>
   );
