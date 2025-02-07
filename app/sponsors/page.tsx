@@ -131,7 +131,7 @@ const SponsorCard = ({
       onClick={() => setSelectedSponsor(sponsor)}
     >
       <motion.div
-        className="from-gray-900/80 hover:from-indigo-600/80 hover:to-purple-600/80 h-full rounded-xl bg-gradient-to-br to-blue/80 p-6 transition-all duration-500"
+        className="from-white/5 to-white/10 hover:from-indigo-400/20 hover:to-purple-400/20 h-full rounded-xl bg-gradient-to-br p-6 transition-all duration-500"
         style={{
           rotateX: rotateX,
           rotateY: rotateY,
@@ -145,12 +145,12 @@ const SponsorCard = ({
           proximity={64}
           inactiveZone={0.01}
         />
-        <div className="bg-black/20 relative aspect-video w-full overflow-hidden rounded-lg backdrop-blur-sm">
+        <div className="bg-black/40 relative aspect-video w-full overflow-hidden rounded-lg backdrop-blur-md">
           <Image
             src={sponsor.thumbnail}
             alt={sponsor.name}
             fill
-            className="object-contain p-6 transition-all duration-500 group-hover:scale-110 group-hover:brightness-125"
+            className="object-contain p-6 mix-blend-lighten transition-all duration-500 group-hover:scale-110 group-hover:brightness-125"
           />
         </div>
         <h3 className="text-white mt-4 text-center text-lg font-medium">
@@ -168,13 +168,13 @@ export default function Sponsors() {
   );
 
   return (
-    <BackgroundLines className="from-indigo-200/90 via-purple-300/80 to-blue-200/90 relative min-h-screen w-full bg-gradient-to-br px-4 py-16 md:py-24">
+    <BackgroundLines className="from-blue-950 to-indigo-950 via-blue-900/90 relative min-h-screen w-full bg-gradient-to-br px-4 py-16 md:py-24">
       <div className="relative mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <h1 className="from-blue-600 via-indigo-500 to-purple-600 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
+          <h1 className="from-blue-300 via-indigo-200 to-purple-300 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
             Our Valued Partners
           </h1>
-          <p className="text-gray-600 mt-4">
+          <p className="text-gray-400 mt-4">
             Empowering innovation through collaboration
           </p>
         </div>
@@ -204,7 +204,7 @@ export default function Sponsors() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="from-indigo-100 to-purple-100 border-indigo-200/20 fixed left-1/2 top-1/2 z-50 w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 transform-gpu rounded-2xl border bg-gradient-to-br p-8 shadow-2xl"
+                className="border-indigo-500/20 from-blue-950/95 to-indigo-950/95 fixed inset-0 z-[100] m-auto h-fit w-full max-w-2xl rounded-2xl border bg-gradient-to-br p-8 shadow-2xl backdrop-blur-md"
               >
                 <button
                   onClick={() => setSelectedSponsor(null)}
@@ -213,26 +213,26 @@ export default function Sponsors() {
                   ✕
                 </button>
                 <div className="flex flex-col items-center gap-6">
-                  <div className="bg-black/20 relative h-40 w-80 overflow-hidden rounded-xl p-4">
+                  <div className="relative h-40 w-80 overflow-hidden rounded-xl bg-blue/10 p-4">
                     <Image
                       src={selectedSponsor.thumbnail}
                       alt={selectedSponsor.name}
                       fill
-                      className="object-contain"
+                      className="object-contain mix-blend-lighten"
                     />
                   </div>
                   <div className="text-center">
-                    <h2 className="from-blue-600 via-indigo-500 to-purple-600 bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
+                    <h2 className="bg-gradient-to-r from-yellow via-primary to-orange bg-clip-text text-2xl font-bold text-transparent">
                       {selectedSponsor.name}
                     </h2>
-                    <p className="text-gray-700 mt-2">
+                    <p className="text-white/70 mt-2">
                       {selectedSponsor.description}
                     </p>
-                    <div className="from-indigo-100/30 to-purple-100/30 mt-6 rounded-lg bg-gradient-to-br p-4">
-                      <h3 className="text-gray-800 mb-2 font-medium">
+                    <div className="mt-6 rounded-lg bg-gradient-to-br from-blue-dark/30 to-blue-light/30 p-4">
+                      <h3 className="text-white/90 mb-2 font-medium">
                         Contribution to ZOTBotics
                       </h3>
-                      <p className="text-gray-700">
+                      <p className="text-white/70">
                         {selectedSponsor.contribution}
                       </p>
                     </div>

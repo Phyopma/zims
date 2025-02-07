@@ -6,6 +6,12 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --color-primary: #ffd30a;
+  --color-secondary: #1b3d6d;
+  --color-blue-dark: #101835;
+  --color-blue-light: #152e51;
+  --color-indigo: #4b0082;
+  --color-purple: #800080;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,6 +30,20 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+  }
+
+  .gradient-primary {
+    @apply from-blue-300 via-indigo-200 to-purple-300 bg-gradient-to-r;
+  }
+
+  .gradient-background {
+    @apply from-gray-900 to-indigo-900/90 bg-gradient-to-br via-blue-dark/80;
+  }
 }
 
 @font-face {
