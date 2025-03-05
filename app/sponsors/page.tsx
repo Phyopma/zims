@@ -5,11 +5,12 @@ import {
   AnimatePresence,
   useMotionValue,
   useTransform,
+  animate,
 } from "framer-motion";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { BackgroundLines } from "@/components/ui/background-lines";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { MetalShimmer } from "@/components/ui/metal-shimmer";
 
 interface SponsorData {
   id: number;
@@ -17,26 +18,43 @@ interface SponsorData {
   description: string;
   contribution: string;
   thumbnail: string;
+  tier: "gold" | "silver" | "bronze";
 }
 
+// Define sponsor tiers
+const sponsorTiers = {
+  gold: ["HAAS.png", "SendCutSend.png"],
+  silver: ["IndustrialPlasticSupply.png", "NHRL.png", "ZTLTech.png"],
+  bronze: ["UROP.jpg", ]
+};
+
+// Flatten and map all sponsors with their tiers
 const sponsors: SponsorData[] = [
-  "HAAS.png",
-  "IndustrialPlasticSupply.png",
-  "NHRL.png",
-  "SendCutSend.png",
-  "UROP.jpg",
-  "ZTLTech.png",
-  "SendCutSend.png",
-  "UROP.jpg",
-  "ZTLTech.png",
-].map((name, idx) => ({
-  id: idx,
-  name: name.replace(".png", "").replace(".jpg", ""),
-  description: "Leading industry partner providing cutting-edge solutions",
-  contribution:
-    "Supporting ZOTBotics with advanced manufacturing equipment and expertise",
-  thumbnail: `/images/SponsorLogos/${name}`,
-}));
+  ...sponsorTiers.gold.map((name, idx) => ({
+    id: idx,
+    name: name.replace(".png", "").replace(".jpg", ""),
+    description: "Gold tier partner providing premium support and resources",
+    contribution: "Major contributor to ZOTBotics' advanced manufacturing capabilities",
+    thumbnail: `/images/SponsorLogos/${name}`,
+    tier: "gold" as const
+  })),
+  ...sponsorTiers.silver.map((name, idx) => ({
+    id: idx + sponsorTiers.gold.length,
+    name: name.replace(".png", "").replace(".jpg", ""),
+    description: "Silver tier partner offering valuable industry expertise",
+    contribution: "Supporting ZOTBotics with specialized equipment and technical guidance",
+    thumbnail: `/images/SponsorLogos/${name}`,
+    tier: "silver" as const
+  })),
+  ...sponsorTiers.bronze.map((name, idx) => ({
+    id: idx + sponsorTiers.gold.length + sponsorTiers.silver.length,
+    name: name.replace(".png", "").replace(".jpg", ""),
+    description: "Bronze tier partner contributing to our community",
+    contribution: "Providing essential resources and support for ZOTBotics projects",
+    thumbnail: `/images/SponsorLogos/${name}`,
+    tier: "bronze" as const
+  }))
+];
 
 const SponsorCard = ({
   sponsor,
@@ -50,37 +68,70 @@ const SponsorCard = ({
   const ref = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const animatedZIndex = useMotionValue(0);
 
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
-  const opacity = useTransform(mouseX, [-0.5, 0, 0.5], [1, 0.8, 1]);
-  const boxShadow = useTransform(
-    mouseX,
-    [-0.5, 0, 0.5],
-    [
-      "0 10px 20px rgba(192, 192, 192, 0.5)",
-      "0 0px 0px rgba(192, 192, 192, 0)",
-      "0 10px 20px rgba(192, 192, 192, 0.5)",
-    ],
-  );
+  // Fixed position patterns based on tier and index
+  const getPositionPattern = () => {
+    // Define fixed positions for each tier with wider spread
+    const positions = {
+      gold: [
+        { x: -80, y: -40 },  // Left-top
+        { x: 80, y: -40 },   // Right-top
+      ],
+      silver: [
+        { x: -120, y: 0 },   // Far left
+        { x: 120, y: 0 },    // Far right
+        { x: -60, y: 80 },  // Left-bottom
+        { x: 60, y: 80 },   // Right-bottom
+      ],
+      bronze: [
+        { x: -160, y: -40 },  // Far left
+        { x: 160, y: -40 },   // Far right
+        { x: -100, y: -100 },   // Left-top
+        { x: 100, y: -100 },    // Right-top
+        { x: -120, y: 100 },    // Left-bottom
+        { x: 120, y: 100 },     // Right-bottom
+        { x: 0, y: -140 },     // Center-top
+        { x: 0, y: 140 },      // Center-bottom
+      ]
+    };
 
-  // Controlled wide-spread distribution
-  const angle = (index / sponsors.length) * Math.PI * 2 + Math.random() * 0.8;
-  const minRadius = 60; // Wider minimum distance from center
-  const maxRadius = 100; // Increased maximum distance for wider spread
-  const radius = minRadius + Math.random() * (maxRadius - minRadius);
+    const tierPositions = positions[sponsor.tier];
+    const positionIndex = index % tierPositions.length;
+    const variation = (index * 5) % 8;
+    
+    return {
+      x: tierPositions[positionIndex].x + (variation - 4),
+      y: tierPositions[positionIndex].y + ((variation * 0.5) - 2)
+    };
+  };
 
-  const randomX = Math.cos(angle) * radius + Math.random() * 45;
-  const randomY = Math.sin(angle) * radius + Math.random() * 5;
+  const position = getPositionPattern();
+  const tierZIndex = sponsor.tier === "gold" ? 30 : sponsor.tier === "silver" ? 20 : 10;
+  const baseZIndex = tierZIndex + index;
+  
+  // Set initial z-index value
+  useEffect(() => {
+    animatedZIndex.set(baseZIndex);
+  }, [baseZIndex, animatedZIndex]);
 
-  // Adjusted layered depth effect
-  const baseScale = 1.0; // Reduced base scale for better visibility
-  const scaleVariation = Math.min(0.15, (index % 4) * 0.05); // More subtle scale variation
-  const scale = baseScale - scaleVariation;
+  const handleMouseEnter = useCallback(() => {
+    // Animate z-index change smoothly and activate shimmer effect
+    animate(animatedZIndex, 100, {
+      duration: 0.3,
+      ease: [0.16, 1, 0.3, 1]
+    });
+  }, [animatedZIndex]);
 
-  // Reduced blur effect
-  const blur = Math.min(0.5, (1 - scale) * 1);
-  const zIndex = Math.floor((1 - scaleVariation) * 10);
+  const handleMouseLeave = useCallback(() => {
+    // Animate z-index back to original value
+    animate(animatedZIndex, baseZIndex, {
+      duration: 0.3,
+      ease: [0.16, 1, 0.3, 1]
+    });
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [animatedZIndex, baseZIndex, mouseX, mouseY]);
 
   return (
     <motion.div
@@ -88,26 +139,25 @@ const SponsorCard = ({
       initial={{ opacity: 0 }}
       animate={{
         opacity: 1,
-        x: randomX + "%",
-        y: randomY + "%",
-        scale: scale,
+        x: position.x + "%",
+        y: position.y + "%",
       }}
       transition={{
         type: "spring",
-        stiffness: 80, // Reduced stiffness for smoother animation
+        stiffness: 80,
         damping: 15,
         delay: index * 0.15,
       }}
       ref={ref}
       style={{
         position: "absolute",
-        left: "30%",
-        top: "15%",
-        zIndex: zIndex,
-        filter: `blur(${blur}px)`,
+        left: "35%",
+        top: "20%",
+        zIndex: animatedZIndex,
         transform: `translate(-50%, -50%)`,
-        width: "450px", // Slightly smaller size for better distribution
+        width: "400px",
         perspective: "1000px",
+        pointerEvents: "auto"
       }}
       onMouseMove={(event) => {
         if (!ref.current) return;
@@ -117,47 +167,48 @@ const SponsorCard = ({
         mouseX.set(xPct);
         mouseY.set(yPct);
       }}
-      onMouseLeave={() => {
-        mouseX.set(0);
-        mouseY.set(0);
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`group relative overflow-hidden rounded-2xl p-1 transition-all duration-500 ease-in-out isolate bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-sm hover:shadow-xl hover:shadow-indigo-500/10`}
+      onClick={() => {
+        setSelectedSponsor(sponsor);
       }}
-      className="from-white/10 to-white/20 group relative overflow-hidden rounded-2xl bg-gradient-to-br p-1 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
-      whileHover={{
-        scale: 1.1,
-        zIndex: 50,
-        filter: "blur(0px)",
-        transition: { duration: 0.2 },
-      }}
-      onClick={() => setSelectedSponsor(sponsor)}
     >
       <motion.div
-        className="from-white/5 to-white/10 hover:from-indigo-400/20 hover:to-purple-400/20 h-full rounded-xl bg-gradient-to-br p-6 transition-all duration-500"
+        className="h-full rounded-xl p-6 transition-all duration-500"
         style={{
-          rotateX: rotateX,
-          rotateY: rotateY,
           transformStyle: "preserve-3d",
+          background: "transparent",
+          scale: useTransform(animatedZIndex, [baseZIndex, 100], [1, 1.1]),
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
         }}
       >
-        <GlowingEffect
-          spread={40}
-          glow={true}
+        <MetalShimmer
+          tier={sponsor.tier}
+          spread={60}
           disabled={false}
           proximity={64}
-          inactiveZone={0.01}
+          inactiveZone={0}
+          movementDuration={1}
+          borderWidth={sponsor.tier === "gold" ? 2.5 : sponsor.tier === "silver" ? 2 : 1.5}
         />
-        <div className="bg-black/40 relative aspect-video w-full overflow-hidden rounded-lg backdrop-blur-md">
+        <div 
+          className="relative aspect-video w-full overflow-hidden rounded-lg backdrop-blur-md" 
+        >
           <Image
             src={sponsor.thumbnail}
             alt={sponsor.name}
             fill
-            className="object-contain p-6 mix-blend-lighten transition-all duration-500 group-hover:scale-110 group-hover:brightness-125"
+            className="object-contain p-6 transition-all duration-500"
+            style={{
+              filter: "drop-shadow(0 0 8px rgba(255,255,255,0.3))"
+            }}
           />
         </div>
-        <h3 className="text-white mt-4 text-center text-lg font-medium">
+        <h3 className={`mt-4 text-center text-lg font-medium ${sponsor.tier === "gold" ? "text-yellow-300" : sponsor.tier === "silver" ? "text-gray-200" : "text-amber-600"}`}>
           {sponsor.name}
         </h3>
       </motion.div>
-      <div className="ring-white/10 group-hover:ring-white/20 absolute inset-0 rounded-2xl ring-1 transition-all duration-300" />
     </motion.div>
   );
 };
@@ -168,10 +219,10 @@ export default function Sponsors() {
   );
 
   return (
-    <BackgroundLines className="from-blue-950 to-indigo-950 via-blue-900/90 relative min-h-screen w-full bg-gradient-to-br px-4 py-16 md:py-24">
+    <BackgroundLines className="gradient-background relative min-h-screen w-full px-4 py-16 md:py-24">
       <div className="relative mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <h1 className="from-blue-300 via-indigo-200 to-purple-300 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
+          <h1 className="from-blue-300 bg-gradient-to-r via-indigo-200 to-purple-300 bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
             Our Valued Partners
           </h1>
           <p className="text-gray-400 mt-4">
@@ -179,7 +230,7 @@ export default function Sponsors() {
           </p>
         </div>
 
-        <div className="relative h-[80vh] w-full">
+        <div className="relative h-[60vh] w-full mt-20">
           {sponsors.map((sponsor, index) => (
             <SponsorCard
               key={sponsor.id}
@@ -197,18 +248,19 @@ export default function Sponsors() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="bg-black/60 fixed inset-0 z-50 backdrop-blur-sm"
+                className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+          
                 onClick={() => setSelectedSponsor(null)}
               />
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="border-indigo-500/20 from-blue-950/95 to-indigo-950/95 fixed inset-0 z-[100] m-auto h-fit w-full max-w-2xl rounded-2xl border bg-gradient-to-br p-8 shadow-2xl backdrop-blur-md"
+                className="from-blue-950/95 fixed inset-0 z-[1000] m-auto h-fit w-full max-w-2xl rounded-2xl border border-indigo-500/20 bg-gradient-to-br to-indigo-950/95 p-8 shadow-2xl backdrop-blur-md"
               >
                 <button
                   onClick={() => setSelectedSponsor(null)}
-                  className="text-gray-400 hover:text-white absolute right-4 top-4 transition-colors"
+                  className="text-gray-400 absolute right-4 top-4 transition-colors hover:text-white"
                 >
                   ✕
                 </button>
@@ -225,11 +277,11 @@ export default function Sponsors() {
                     <h2 className="bg-gradient-to-r from-yellow via-primary to-orange bg-clip-text text-2xl font-bold text-transparent">
                       {selectedSponsor.name}
                     </h2>
-                    <p className="text-white/70 mt-2">
+                    <p className="mt-2 text-white/70">
                       {selectedSponsor.description}
                     </p>
                     <div className="mt-6 rounded-lg bg-gradient-to-br from-blue-dark/30 to-blue-light/30 p-4">
-                      <h3 className="text-white/90 mb-2 font-medium">
+                      <h3 className="mb-2 font-medium text-white/90">
                         Contribution to ZOTBotics
                       </h3>
                       <p className="text-white/70">

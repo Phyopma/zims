@@ -38,11 +38,11 @@ body {
   }
 
   .gradient-primary {
-    @apply from-blue-300 via-indigo-200 to-purple-300 bg-gradient-to-r;
+    @apply from-blue-300 bg-gradient-to-r via-indigo-200 to-purple-300;
   }
 
   .gradient-background {
-    @apply from-gray-900 to-indigo-900/90 bg-gradient-to-br via-blue-dark/80;
+    @apply from-gray-dark bg-gradient-to-br via-blue-dark/80 to-indigo-900/90;
   }
 }
 
