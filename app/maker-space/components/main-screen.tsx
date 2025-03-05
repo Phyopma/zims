@@ -7,10 +7,10 @@ import { Alert } from "react-daisyui";
 
 export default function MainScreen() {
   const windowWidth = useWindowWidth();
-  const mobileWidthThreshold = 768; // Define mobile width threshold, e.g., 768px
+  const mobileWidthThreshold = 768;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-blue-dark">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-blue-dark">
       {windowWidth < mobileWidthThreshold && (
         <Alert className="absolute z-10 mt-20 w-full rounded-none bg-primary p-2 text-primary-content">
           <span className="text-center font-semibold text-red">

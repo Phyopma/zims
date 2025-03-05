@@ -5,7 +5,7 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
-import EnhancedHotspot from "@/app/components/makerspace/enhanced-hotspot";
+import EnhancedHotspot from "../../components/makerspace/enhanced-hotspot";
 
 const HDRBackground = () => {
   const texture = useLoader(
@@ -168,12 +168,12 @@ const HDRDisplay = () => {
                   setShowModal(true);
                 }}
               />
-            ))}
+            ))}          
           </Suspense>
         </Canvas>
 
         {showModal && (
-          <div className="bg-black/50 fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50">
             <div className="w-96 rounded-lg bg-neutral-900 p-6 shadow-xl">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-yellow">
@@ -181,7 +181,7 @@ const HDRDisplay = () => {
                 </h2>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="text-white text-2xl hover:text-yellow"
+                  className="text-2xl text-white hover:text-yellow"
                 >
                   ×
                 </button>
