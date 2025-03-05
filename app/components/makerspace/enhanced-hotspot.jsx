@@ -49,18 +49,19 @@ const EnhancedHotspot = ({ position, icon, title, description, onClick }) => {
           onMouseLeave={() => setIsHovered(false)}
           onClick={onClick}
         >
-          <div className="w-16 h-16 rounded-full bg-yellow backdrop-blur-lg p-2 cursor-pointer
+          <div className="w-24 h-24 rounded-full bg-yellow backdrop-blur-lg p-3 cursor-pointer
                         transform transition-all duration-300 ease-out
                         hover:scale-125 hover:bg-yellow/60 hover:shadow-xl hover:shadow-yellow/40
                         active:scale-95 active:bg-yellow/70
-                        ring-2 ring-yellow/30 hover:ring-yellow/60">
-            <Image src={icon} alt={title} width={64} height={64} className="w-full h-full filter drop-shadow-lg" />
+                        ring-4 ring-yellow/30 hover:ring-yellow/60">
+            <Image src={icon} alt={title} width={96} height={96} className="w-full h-full filter drop-shadow-lg" />
             {isHovered && (
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 px-4 py-2
-                          bg-black/90 backdrop-blur-md rounded-lg text-white text-base font-medium
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 px-6 py-3
+                          bg-black/90 backdrop-blur-md rounded-lg text-white text-lg font-medium
                           opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                          shadow-lg shadow-black/50 border border-white/10">
-                {title}
+                          shadow-lg shadow-black/50 border border-white/10 min-w-[200px] text-center">
+                <div className="font-bold mb-2">{title}</div>
+                <div className="text-sm text-gray-300">{description}</div>
               </div>
             )}
           </div>

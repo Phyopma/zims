@@ -7,14 +7,10 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
 import EnhancedHotspot from "../../components/makerspace/enhanced-hotspot";
 
-const HDRBackground = () => {
-  const texture = useLoader(
-    RGBELoader,
-    "/images/makerspace/3d_model.hdr",
-    (loader) => {
-      loader.setDataType(THREE.FloatType);
-    },
-  );
+const HDRBackground = ({ hdrPath }) => {
+  const texture = useLoader(RGBELoader, hdrPath, (loader) => {
+    loader.setDataType(THREE.FloatType);
+  });
   texture.mapping = THREE.EquirectangularReflectionMapping;
   return <primitive attach="background" object={texture} />;
 };
@@ -139,38 +135,103 @@ const HDRDisplay = () => {
   });
 
   const opacity = useTransform(scrollProgress, [0, 0.2], [0, 1]);
+  const firstSceneOpacity = useTransform(
+    scrollProgress,
+    [0, 0.5, 0.6],
+    [1, 1, 0],
+  );
+  const secondSceneOpacity = useTransform(
+    scrollProgress,
+    [0.5, 0.6, 1],
+    [0, 1, 1],
+  );
 
   return (
     <motion.div className="relative mt-20 h-full w-full" style={{ opacity }}>
-      <div className="relative mx-auto flex h-screen w-full justify-center">
-        <Canvas className="hover:cursor-pointer">
-          <ScrollControlledCamera scrollProgress={scrollProgress} />
-          <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={90} />
-          <OrbitControls
-            enableZoom={false}
-            enableRotate={false}
-            enablePan={false}
-          />
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} />
-          <pointLight position={[0, 5, 10]} intensity={1} />
-          <Suspense fallback={null}>
-            <HDRBackground />
-            {tools.map((tool, index) => (
-              <EnhancedHotspot
-                key={index}
-                position={tool.position}
-                icon={tool.icon}
-                title={tool.title}
-                description={tool.description}
-                onClick={() => {
-                  setSelectedTool(tool);
-                  setShowModal(true);
-                }}
-              />
-            ))}          
-          </Suspense>
-        </Canvas>
+      <div className="absolute left-0 top-0 z-10 w-full bg-gradient-to-b from-black/80 to-transparent py-8 text-center">
+        <h1 className="mb-2 text-4xl font-bold text-yellow">
+          Welcome to Our Makerspace
+        </h1>
+        <p className="text-xl text-white/90">
+          Explore our state-of-the-art facilities and tools
+        </p>
+      </div>
+      <div className="relative mx-auto flex w-full flex-col">
+        <motion.div
+          className="relative h-screen"
+          style={{ opacity: firstSceneOpacity }}
+        >
+          <Canvas className="absolute inset-0">
+            <ScrollControlledCamera scrollProgress={scrollProgress} />
+            <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={90} />
+            <OrbitControls
+              enableZoom={false}
+              enableRotate={false}
+              enablePan={false}
+            />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 5, 5]} intensity={1.5} />
+            <pointLight position={[0, 5, 10]} intensity={1} />
+            <Suspense fallback={null}>
+              <HDRBackground hdrPath="/images/makerspace/3d_model.hdr" />
+              {tools.map((tool, index) => (
+                <EnhancedHotspot
+                  key={index}
+                  position={tool.position}
+                  icon={tool.icon}
+                  title={tool.title}
+                  description={tool.description}
+                  onClick={() => {
+                    setSelectedTool(tool);
+                    setShowModal(true);
+                  }}
+                />
+              ))}
+            </Suspense>
+          </Canvas>
+        </motion.div>
+
+        <motion.div
+          className="relative h-screen"
+          style={{
+            opacity: secondSceneOpacity,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 1,
+          }}
+        >
+          <Canvas className="absolute inset-0">
+            <ScrollControlledCamera scrollProgress={scrollProgress} />
+            <PerspectiveCamera makeDefault position={[0, 50, 50]} fov={90} />
+            <OrbitControls
+              enableZoom={false}
+              enableRotate={false}
+              enablePan={false}
+            />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 5, 5]} intensity={1.5} />
+            <pointLight position={[0, 5, 10]} intensity={1} />
+            <Suspense fallback={null}>
+              <HDRBackground hdrPath="/images/makerspace/Photo Studio Loft 4K.hdr" />
+              {tools.map((tool, index) => (
+                <EnhancedHotspot
+                  key={index}
+                  position={tool.position}
+                  icon={tool.icon}
+                  title={tool.title}
+                  description={tool.description}
+                  onClick={() => {
+                    setSelectedTool(tool);
+                    setShowModal(true);
+                  }}
+                />
+              ))}
+            </Suspense>
+          </Canvas>
+        </motion.div>
 
         {showModal && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50">
