@@ -2,6 +2,11 @@
 const nextConfig = {
   images: {
     domains: ["aceternity.com"],
+    unoptimized: process.env.NODE_ENV === "development",
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+    tsconfigPath: "./tsconfig.json",
   },
   webpack(config) {
     config.module.rules.push({

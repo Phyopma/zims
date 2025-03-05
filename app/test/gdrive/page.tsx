@@ -29,7 +29,7 @@ const GoogleDriveMedia = () => {
     return () => {
       if (imageData) URL.revokeObjectURL(imageData);
     };
-  }, []);
+  }, [imageData]);
 
   return (
     <div className="h-screen bg-blue-dark py-28">

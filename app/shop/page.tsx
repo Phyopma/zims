@@ -140,8 +140,22 @@ export default function Shop() {
             <div className="">
               <h2>{curProduct.product1}</h2>
               <h3>{curProduct.product2}</h3>
-              <img src={curProduct.product1Image} alt="Product 1" />
-              <img src={curProduct.product2Image} alt="Product 2" />
+              <div className="relative h-48 w-full">
+                <Image
+                  src={curProduct.product1Image}
+                  alt="Product 1"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div className="relative h-48 w-full">
+                <Image
+                  src={curProduct.product2Image || ''}
+                  alt="Product 2"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <ul>
                 {curProduct.product1description.map((desc, index) => (
                   <li key={index}>{desc}</li>

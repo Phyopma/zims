@@ -10,15 +10,14 @@ async function getAuthClient() {
   return auth;
 }
 
-export async function GET(req) {
+export async function GET(req, { params }) {
   try {
     const auth = await getAuthClient();
     const drive = google.drive({ version: "v3", auth });
-    const { searchParams } = new URL(req.url);
-    let fileId = searchParams.get("name");
-    fileId = fM[fileId];
+    const name = req.nextUrl.searchParams.get("name");
+    const fileId = fM[name];
 
-    // handel the file not found
+    // handle the file not found
     if (!fileId) {
       return NextResponse.json({ error: "File not found" }, { status: 404 });
     }
