@@ -107,21 +107,21 @@ const HDRDisplay = () => {
 
   const tools = [
     {
-      position: [-20, 10, -20],
+      position: [-20, 13, 30],
       icon: "/tools/3d-printer.svg",
       title: "3D Printer",
       description:
         "High-precision 3D printing for rapid prototyping and custom parts manufacturing.",
     },
     {
-      position: [20, 15, -15],
+      position: [20, 15, 25],
       icon: "/tools/saw.svg",
       title: "Power Tools",
       description:
         "Professional-grade power tools for woodworking and metal fabrication.",
     },
     {
-      position: [-15, 20, 20],
+      position: [-15, 20, 40],
       icon: "/tools/glue-gun.svg",
       title: "Assembly Station",
       description:
@@ -181,6 +181,7 @@ const HDRDisplay = () => {
                   icon={tool.icon}
                   title={tool.title}
                   description={tool.description}
+                  opacity={firstSceneOpacity}
                   onClick={() => {
                     setSelectedTool(tool);
                     setShowModal(true);
@@ -216,19 +217,6 @@ const HDRDisplay = () => {
             <pointLight position={[0, 5, 10]} intensity={1} />
             <Suspense fallback={null}>
               <HDRBackground hdrPath="/images/makerspace/Photo Studio Loft 4K.hdr" />
-              {tools.map((tool, index) => (
-                <EnhancedHotspot
-                  key={index}
-                  position={tool.position}
-                  icon={tool.icon}
-                  title={tool.title}
-                  description={tool.description}
-                  onClick={() => {
-                    setSelectedTool(tool);
-                    setShowModal(true);
-                  }}
-                />
-              ))}
             </Suspense>
           </Canvas>
         </motion.div>

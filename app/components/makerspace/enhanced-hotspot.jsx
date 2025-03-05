@@ -38,7 +38,7 @@ const EnhancedHotspot = ({ position, icon, title, description, onClick }) => {
         occlude
         style={{
           transition: 'all 0.2s',
-          opacity: opacity,
+          opacity: typeof opacity === 'number' ? opacity : opacity?.get?.() || 1,
           transform: `scale(${isHovered ? 1.1 : 1})`,
         }}
         distanceFactor={15}

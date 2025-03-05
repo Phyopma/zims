@@ -9,6 +9,7 @@ interface EnhancedHotspotProps {
   title: string;
   description: string;
   onClick: () => void;
+  opacity?: number | any;
 }
 
 const EnhancedHotspot = ({
@@ -17,6 +18,7 @@ const EnhancedHotspot = ({
   title,
   description,
   onClick,
+  opacity,
 }: EnhancedHotspotProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -27,7 +29,7 @@ const EnhancedHotspot = ({
         occlude
         style={{
           transition: 'all 0.2s',
-          opacity: isHovered ? 1 : 0.8,
+          opacity: typeof opacity === 'number' ? opacity : opacity?.get?.() || (isHovered ? 1 : 0.8),
           transform: `scale(${isHovered ? 1.1 : 1})`,
         }}
       >
