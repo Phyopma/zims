@@ -25,7 +25,7 @@ interface SponsorData {
 const sponsorTiers = {
   gold: ["HAAS.png", "SendCutSend.png"],
   silver: ["IndustrialPlasticSupply.png", "NHRL.png", "ZTLTech.png"],
-  bronze: ["UROP.jpg", ]
+  bronze: ["UROP.jpg"],
 };
 
 // Flatten and map all sponsors with their tiers
@@ -34,27 +34,62 @@ const sponsors: SponsorData[] = [
     id: idx,
     name: name.replace(".png", "").replace(".jpg", ""),
     description: "Gold tier partner providing premium support and resources",
-    contribution: "Major contributor to ZOTBotics' advanced manufacturing capabilities",
+    contribution:
+      "Major contributor to ZOTBotics' advanced manufacturing capabilities",
     thumbnail: `/images/SponsorLogos/${name}`,
-    tier: "gold" as const
+    tier: "gold" as const,
   })),
   ...sponsorTiers.silver.map((name, idx) => ({
     id: idx + sponsorTiers.gold.length,
     name: name.replace(".png", "").replace(".jpg", ""),
     description: "Silver tier partner offering valuable industry expertise",
-    contribution: "Supporting ZOTBotics with specialized equipment and technical guidance",
+    contribution:
+      "Supporting ZOTBotics with specialized equipment and technical guidance",
     thumbnail: `/images/SponsorLogos/${name}`,
-    tier: "silver" as const
+    tier: "silver" as const,
   })),
   ...sponsorTiers.bronze.map((name, idx) => ({
     id: idx + sponsorTiers.gold.length + sponsorTiers.silver.length,
     name: name.replace(".png", "").replace(".jpg", ""),
     description: "Bronze tier partner contributing to our community",
-    contribution: "Providing essential resources and support for ZOTBotics projects",
+    contribution:
+      "Providing essential resources and support for ZOTBotics projects",
     thumbnail: `/images/SponsorLogos/${name}`,
-    tier: "bronze" as const
-  }))
+    tier: "bronze" as const,
+  })),
 ];
+
+// Simplified positioning configuration with more scattered fixed positions
+const tierConfig = {
+  gold: {
+    positions: [
+      [-300, -180], // Left upper
+      [280, -200], // Right upper
+    ],
+    baseWidth: 380,
+    zIndex: 10,
+    hoverScale: 1.1,
+  },
+  silver: {
+    positions: [
+      [-380, -50], // Far left
+      [30, -140], // Center upper
+      [350, -30], // Far right
+    ],
+    baseWidth: 340,
+    zIndex: 5,
+    hoverScale: 1.2,
+  },
+  bronze: {
+    positions: [
+      [-200, 100], // Left lower
+      [220, 50], // Right middle
+    ],
+    baseWidth: 300,
+    zIndex: 3,
+    hoverScale: 1.3,
+  },
+};
 
 const SponsorCard = ({
   sponsor,
@@ -65,147 +100,120 @@ const SponsorCard = ({
   index: number;
   setSelectedSponsor: (sponsor: SponsorData | null) => void;
 }) => {
-  const ref = useRef(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const animatedZIndex = useMotionValue(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const config = tierConfig[sponsor.tier];
+  const [isHovered, setIsHovered] = useState(false);
+  const zIndex = useMotionValue(config.zIndex);
 
-  // Fixed position patterns based on tier and index
-  const getPositionPattern = () => {
-    // Define fixed positions for each tier with wider spread
-    const positions = {
-      gold: [
-        { x: -80, y: -40 },  // Left-top
-        { x: 80, y: -40 },   // Right-top
-      ],
-      silver: [
-        { x: -120, y: 0 },   // Far left
-        { x: 120, y: 0 },    // Far right
-        { x: -60, y: 80 },  // Left-bottom
-        { x: 60, y: 80 },   // Right-bottom
-      ],
-      bronze: [
-        { x: -160, y: -40 },  // Far left
-        { x: 160, y: -40 },   // Far right
-        { x: -100, y: -100 },   // Left-top
-        { x: 100, y: -100 },    // Right-top
-        { x: -120, y: 100 },    // Left-bottom
-        { x: 120, y: 100 },     // Right-bottom
-        { x: 0, y: -140 },     // Center-top
-        { x: 0, y: 140 },      // Center-bottom
-      ]
-    };
+  // Get position for this card based on tier and index
+  const positionIndex = index % config.positions.length;
+  const position = config.positions[positionIndex];
 
-    const tierPositions = positions[sponsor.tier];
-    const positionIndex = index % tierPositions.length;
-    const variation = (index * 5) % 8;
-    
-    return {
-      x: tierPositions[positionIndex].x + (variation - 4),
-      y: tierPositions[positionIndex].y + ((variation * 0.5) - 2)
-    };
-  };
+  // Calculate card width based on tier (300-400px range)
+  const cardWidth = config.baseWidth;
 
-  const position = getPositionPattern();
-  const tierZIndex = sponsor.tier === "gold" ? 30 : sponsor.tier === "silver" ? 20 : 10;
-  const baseZIndex = tierZIndex + index;
-  
-  // Set initial z-index value
-  useEffect(() => {
-    animatedZIndex.set(baseZIndex);
-  }, [baseZIndex, animatedZIndex]);
-
+  // Handle mouse events
   const handleMouseEnter = useCallback(() => {
-    // Animate z-index change smoothly and activate shimmer effect
-    animate(animatedZIndex, 100, {
-      duration: 0.3,
-      ease: [0.16, 1, 0.3, 1]
-    });
-  }, [animatedZIndex]);
+    setIsHovered(true);
+    animate(zIndex, 100, { duration: 0.1 });
+  }, [zIndex]);
 
   const handleMouseLeave = useCallback(() => {
-    // Animate z-index back to original value
-    animate(animatedZIndex, baseZIndex, {
-      duration: 0.3,
-      ease: [0.16, 1, 0.3, 1]
-    });
-    mouseX.set(0);
-    mouseY.set(0);
-  }, [animatedZIndex, baseZIndex, mouseX, mouseY]);
+    setIsHovered(false);
+    animate(zIndex, config.zIndex, { duration: 0.1 });
+  }, [config.zIndex, zIndex]);
 
   return (
     <motion.div
-      key={sponsor.id}
-      initial={{ opacity: 0 }}
+      ref={ref}
+      initial={{ opacity: 0, x: position[0], y: position[1] }}
       animate={{
         opacity: 1,
-        x: position.x + "%",
-        y: position.y + "%",
+        x: position[0],
+        y: position[1],
+        scale: isHovered ? config.hoverScale : 1,
+        z: isHovered ? 50 : 0,
       }}
       transition={{
         type: "spring",
-        stiffness: 80,
+        stiffness: 100,
         damping: 15,
-        delay: index * 0.15,
+        delay: index * 0.1,
       }}
-      ref={ref}
       style={{
         position: "absolute",
-        left: "35%",
-        top: "20%",
-        zIndex: animatedZIndex,
-        transform: `translate(-50%, -50%)`,
-        width: "400px",
+        left: "50%",
+        top: "50%", // Changed from 40% to 50% for better centering
+        width: cardWidth,
+        zIndex,
+        transformStyle: "preserve-3d",
         perspective: "1000px",
-        pointerEvents: "auto"
       }}
-      onMouseMove={(event) => {
-        if (!ref.current) return;
-        const rect = (ref.current as HTMLDivElement).getBoundingClientRect();
-        const xPct = (event.clientX - rect.left) / rect.width - 0.5;
-        const yPct = (event.clientY - rect.top) / rect.height - 0.5;
-        mouseX.set(xPct);
-        mouseY.set(yPct);
-      }}
+      className="origin-center"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`group relative overflow-hidden rounded-2xl p-1 transition-all duration-500 ease-in-out isolate bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-sm hover:shadow-xl hover:shadow-indigo-500/10`}
-      onClick={() => {
-        setSelectedSponsor(sponsor);
+      onClick={() => setSelectedSponsor(sponsor)}
+      whileHover={{
+        y: position[1] - 20, // Move upward slightly on hover
+        transition: { duration: 0.3 },
       }}
     >
       <motion.div
-        className="h-full rounded-xl p-6 transition-all duration-500"
+        className={`from-slate-900/90 to-slate-800/90 relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 backdrop-blur-sm`}
         style={{
-          transformStyle: "preserve-3d",
-          background: "transparent",
-          scale: useTransform(animatedZIndex, [baseZIndex, 100], [1, 1.1]),
-          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+          borderColor:
+            sponsor.tier === "gold"
+              ? "rgba(255, 215, 0, 0.5)"
+              : sponsor.tier === "silver"
+                ? "rgba(192, 192, 192, 0.5)"
+                : "rgba(205, 127, 50, 0.5)",
+          boxShadow: isHovered
+            ? `0 20px 50px -10px ${
+                sponsor.tier === "gold"
+                  ? "rgba(255, 215, 0, 0.4)"
+                  : sponsor.tier === "silver"
+                    ? "rgba(192, 192, 192, 0.4)"
+                    : "rgba(205, 127, 50, 0.4)"
+              }, 0 10px 20px rgba(0,0,0,0.2)`
+            : "none",
+          transition: "box-shadow 0.3s ease-out",
         }}
       >
         <MetalShimmer
           tier={sponsor.tier}
           spread={60}
-          disabled={false}
+          disabled={!isHovered}
           proximity={64}
           inactiveZone={0}
           movementDuration={1}
-          borderWidth={sponsor.tier === "gold" ? 2.5 : sponsor.tier === "silver" ? 2 : 1.5}
+          borderWidth={
+            sponsor.tier === "gold" ? 2.5 : sponsor.tier === "silver" ? 2 : 1.5
+          }
         />
-        <div 
-          className="relative aspect-video w-full overflow-hidden rounded-lg backdrop-blur-md" 
-        >
+
+        <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg backdrop-blur-md">
           <Image
             src={sponsor.thumbnail}
             alt={sponsor.name}
             fill
-            className="object-contain p-6 transition-all duration-500"
+            className="object-contain p-4 transition-all duration-500"
             style={{
-              filter: "drop-shadow(0 0 8px rgba(255,255,255,0.3))"
+              filter: isHovered
+                ? "drop-shadow(0 0 12px rgba(255,255,255,0.4))"
+                : "drop-shadow(0 0 8px rgba(255,255,255,0.2))",
             }}
           />
         </div>
-        <h3 className={`mt-4 text-center text-lg font-medium ${sponsor.tier === "gold" ? "text-yellow-300" : sponsor.tier === "silver" ? "text-gray-200" : "text-amber-600"}`}>
+
+        <h3
+          className={`text-center text-lg font-medium ${
+            sponsor.tier === "gold"
+              ? "text-yellow-300"
+              : sponsor.tier === "silver"
+                ? "text-gray-200"
+                : "text-amber-600"
+          }`}
+        >
           {sponsor.name}
         </h3>
       </motion.div>
@@ -230,7 +238,8 @@ export default function Sponsors() {
           </p>
         </div>
 
-        <div className="relative h-[60vh] w-full mt-20">
+        {/* Main sponsor display area - adjusted positioning */}
+        <div className="relative mt-10 h-[80vh] w-full">
           {sponsors.map((sponsor, index) => (
             <SponsorCard
               key={sponsor.id}
@@ -249,7 +258,6 @@ export default function Sponsors() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          
                 onClick={() => setSelectedSponsor(null)}
               />
               <motion.div
