@@ -17,10 +17,7 @@ const HDRBackground = ({ hdrPath }) => {
 
 const ScrollControlledCamera = ({ scrollProgress }) => {
   const { camera } = useThree();
-  const initialRotation = useRef(0);
-  const targetRotation = useRef(Math.PI * 2);
   const initialPosition = useRef({ x: 0, y: 30, z: 50 });
-  const fadeInComplete = useRef(false);
 
   const easeInOutCubic = (t) => {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -51,19 +48,19 @@ const ScrollControlledCamera = ({ scrollProgress }) => {
 
     if (progress <= 0.6) {
       camera.rotation.x = 0;
+      camera.rotation.z = 0;
       const phase2Progress = easeInOutCubic((progress - 0.3) / 0.3);
       const rotationY = THREE.MathUtils.lerp(0, Math.PI * 2, phase2Progress);
       camera.rotation.y = rotationY;
       return;
     }
 
+    // Ensure camera is completely horizontal for the second canvas
+    camera.rotation.x = 0;
+    camera.rotation.z = 0;
     const phase3Progress = easeInOutCubic((progress - 0.6) / 0.4);
-    const newY = THREE.MathUtils.lerp(30, 100, phase3Progress);
-    const newZ = THREE.MathUtils.lerp(50, 150, phase3Progress);
-    const tiltAngle = THREE.MathUtils.lerp(0, -Math.PI / 4, phase3Progress);
-
-    camera.position.set(0, newY, newZ);
-    camera.rotation.x = tiltAngle;
+    const rotationY = THREE.MathUtils.lerp(0, Math.PI * 2, phase3Progress);
+    camera.rotation.y = rotationY;
   });
 
   return null;
@@ -80,7 +77,7 @@ const HDRDisplay = () => {
       if (!animationComplete) {
         event.preventDefault();
         const currentScroll = scrollY.get();
-        const delta = event.deltaY * 0.0005;
+        const delta = event.deltaY * 0.0002; // Adjust this value for scrolling speed
         const newScroll = Math.max(Math.min(currentScroll + delta, 1), 0);
         scrollY.set(newScroll);
 
