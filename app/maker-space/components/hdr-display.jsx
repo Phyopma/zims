@@ -223,7 +223,7 @@ const HDRDisplay = () => {
         </motion.div>
 
         {showModal && (
-          <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50">
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center">
             <div className="w-96 rounded-lg bg-neutral-900 p-6 shadow-xl">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-yellow">

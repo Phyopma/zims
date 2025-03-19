@@ -25,7 +25,7 @@ const EnhancedHotspot = ({
   return (
     <group position={position}>
       <Html
-        transform
+        // transform
         occlude
         style={{
           transition: 'all 0.2s',
