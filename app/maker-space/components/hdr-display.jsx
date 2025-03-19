@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { motion, useTransform, useMotionValue, useSpring } from "framer-motion";
 import EnhancedHotspot from "../../components/makerspace/enhanced-hotspot";
+import BoardMembersSection from "./board-members-section";
 
 const HDRBackground = ({ hdrPath }) => {
   const texture = useLoader(RGBELoader, hdrPath, (loader) => {
@@ -144,7 +145,10 @@ const HDRDisplay = () => {
   );
 
   return (
-    <motion.div className="relative mt-20 h-full w-full" style={{ opacity }}>
+    <motion.div
+      className="no-scrollbar relative mt-20 h-full w-full"
+      style={{ opacity }}
+    >
       <div className="absolute left-0 top-0 z-10 w-full bg-gradient-to-b from-black/80 to-transparent py-8 text-center">
         <h1 className="mb-2 text-4xl font-bold text-yellow">
           Welcome to Our Makerspace

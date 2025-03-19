@@ -4,6 +4,7 @@ import MakerSpaceHeader from "./makerspace-header";
 import HDRDisplay from "./hdr-display";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { Alert } from "react-daisyui";
+import BoardMembersSection from "./board-members-section";
 
 export default function MainScreen() {
   const windowWidth = useWindowWidth();
@@ -20,6 +21,7 @@ export default function MainScreen() {
       )}
       <MakerSpaceHeader />
       <HDRDisplay />
+      <BoardMembersSection/>
     </div>
   );
 }

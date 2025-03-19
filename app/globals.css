@@ -44,6 +44,17 @@ body {
   .gradient-background {
     @apply from-gray-dark bg-gradient-to-br via-blue-dark/80 to-indigo-900/90;
   }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 
 @font-face {
