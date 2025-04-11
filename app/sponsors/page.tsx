@@ -19,6 +19,7 @@ interface SponsorData {
   contribution: string;
   thumbnail: string;
   tier: "gold" | "silver" | "bronze";
+  clubs: ("ZIT" | "UAVs" | "PEVs" | "ACE")[];
 }
 
 // Define sponsor tiers
@@ -38,6 +39,9 @@ const sponsors: SponsorData[] = [
       "Major contributor to ZOTBotics' advanced manufacturing capabilities",
     thumbnail: `/images/SponsorLogos/${name}`,
     tier: "gold" as const,
+    clubs: (name === "HAAS.png"
+      ? ["ZIT", "UAVs", "PEVs", "ACE"]
+      : ["ZIT", "PEVs", "ACE"]) as ("ZIT" | "UAVs" | "PEVs" | "ACE")[],
   })),
   ...sponsorTiers.silver.map((name, idx) => ({
     id: idx + sponsorTiers.gold.length,
@@ -47,6 +51,11 @@ const sponsors: SponsorData[] = [
       "Supporting ZOTBotics with specialized equipment and technical guidance",
     thumbnail: `/images/SponsorLogos/${name}`,
     tier: "silver" as const,
+    clubs: (name === "NHRL.png"
+      ? ["UAVs", "ACE"]
+      : name === "ZTLTech.png"
+        ? ["PEVs", "ACE"]
+        : ["ZIT", "ACE"]) as ("ZIT" | "UAVs" | "PEVs" | "ACE")[],
   })),
   ...sponsorTiers.bronze.map((name, idx) => ({
     id: idx + sponsorTiers.gold.length + sponsorTiers.silver.length,
@@ -56,6 +65,12 @@ const sponsors: SponsorData[] = [
       "Providing essential resources and support for ZOTBotics projects",
     thumbnail: `/images/SponsorLogos/${name}`,
     tier: "bronze" as const,
+    clubs: ["ZIT", "UAVs", "PEVs", "ACE"] as (
+      | "ZIT"
+      | "UAVs"
+      | "PEVs"
+      | "ACE"
+    )[],
   })),
 ];
 
@@ -221,14 +236,49 @@ const SponsorCard = ({
   );
 };
 
+const FilterButton = ({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <button
+    onClick={onClick}
+    className={`rounded-lg px-4 py-2 text-sm transition-all ${
+      active
+        ? "bg-indigo-500/20 text-indigo-300 shadow-lg shadow-indigo-500/10"
+        : "bg-slate-800/50 text-slate-400 hover:bg-slate-700/50"
+    }`}
+  >
+    {children}
+  </button>
+);
+
 export default function Sponsors() {
   const [selectedSponsor, setSelectedSponsor] = useState<SponsorData | null>(
     null,
   );
+  const [selectedClub, setSelectedClub] = useState<
+    "ZIT" | "UAVs" | "PEVs" | "ACE" | "all"
+  >("all");
+  const [selectedTier, setSelectedTier] = useState<
+    "gold" | "silver" | "bronze" | "all"
+  >("all");
+
+  const filteredSponsors = sponsors.filter((sponsor) => {
+    const clubMatch =
+      selectedClub === "all" ||
+      sponsor.clubs.includes(selectedClub as "ZIT" | "UAVs" | "PEVs" | "ACE");
+    const tierMatch = selectedTier === "all" || sponsor.tier === selectedTier;
+    return clubMatch && tierMatch;
+  });
 
   return (
-    <BackgroundLines className="gradient-background relative min-h-screen w-full px-4 py-16 md:py-24">
-      <div className="relative mx-auto max-w-7xl">
+    <BackgroundLines className="gradient-background relative min-h-[100vh] w-full px-4 py-16 pb-32 md:py-24">
+      <div className="relative mx-auto max-w-7xl pb-40">
         <div className="mb-16 text-center">
           <h1 className="from-blue-300 bg-gradient-to-r via-indigo-200 to-purple-300 bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
             Our Valued Partners
@@ -236,11 +286,74 @@ export default function Sponsors() {
           <p className="text-gray-400 mt-4">
             Empowering innovation through collaboration
           </p>
+
+          {/* Filter Controls */}
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <div className="flex flex-wrap justify-center gap-2">
+              <FilterButton
+                active={selectedClub === "all"}
+                onClick={() => setSelectedClub("all")}
+              >
+                All Clubs
+              </FilterButton>
+              <FilterButton
+                active={selectedClub === "ZIT"}
+                onClick={() => setSelectedClub("ZIT")}
+              >
+                ZIT
+              </FilterButton>
+              <FilterButton
+                active={selectedClub === "UAVs"}
+                onClick={() => setSelectedClub("UAVs")}
+              >
+                UAVs
+              </FilterButton>
+              <FilterButton
+                active={selectedClub === "PEVs"}
+                onClick={() => setSelectedClub("PEVs")}
+              >
+                PEVs
+              </FilterButton>
+              <FilterButton
+                active={selectedClub === "ACE"}
+                onClick={() => setSelectedClub("ACE")}
+              >
+                ACE
+              </FilterButton>
+            </div>
+
+            <div className="flex justify-center gap-2">
+              <FilterButton
+                active={selectedTier === "all"}
+                onClick={() => setSelectedTier("all")}
+              >
+                All Tiers
+              </FilterButton>
+              <FilterButton
+                active={selectedTier === "gold"}
+                onClick={() => setSelectedTier("gold")}
+              >
+                Gold
+              </FilterButton>
+              <FilterButton
+                active={selectedTier === "silver"}
+                onClick={() => setSelectedTier("silver")}
+              >
+                Silver
+              </FilterButton>
+              <FilterButton
+                active={selectedTier === "bronze"}
+                onClick={() => setSelectedTier("bronze")}
+              >
+                Bronze
+              </FilterButton>
+            </div>
+          </div>
         </div>
 
-        {/* Main sponsor display area - adjusted positioning */}
-        <div className="relative mt-10 h-[80vh] w-full">
-          {sponsors.map((sponsor, index) => (
+        {/* Main sponsor display area - adjusted with better containment */}
+        <div className="relative mx-auto mt-10 h-[450px] min-h-[450px] w-full max-w-5xl md:h-[550px]">
+          {filteredSponsors.map((sponsor, index) => (
             <SponsorCard
               key={sponsor.id}
               sponsor={sponsor}
